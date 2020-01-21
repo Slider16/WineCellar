@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WineViewModel>
+@{
+    ViewBag.Title = "Wine List";
+}
+<h1>Shop</h1>
+<p>Count: @Model.Count()</p>
+@**@
+<div class="row">
+    @foreach (var wine in Model)
+    {
+        <div class="col-md-3">
+            <div class="border bg-light rounded p-1">
+                <img src="~/images/wine-bottles.png" class="img-fluid" alt="@wine.Name" />"
+                <h5><a href="@wine.Links.FirstOrDefault(l => l.Rel.Equals("filter_by_id"))?.Href">@wine.Name</a></h5>
+                <ul>
+                    <li>Vineyard: @wine.Vineyard</li>
+                    <li>Location: @wine.Location </li>
+                    <li>Year: @wine.Year</li>
+                    <li>Rating:</li>
+                    <li>Tasting Notes: @wine.Notes</li>
+                </ul>
+                <button id="buyButton" class="btn btn-success">Buy</button>
+            </div>
+        </div>
+    }
+</div>

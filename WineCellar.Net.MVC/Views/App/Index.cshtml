@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="row">
+        <div class="col-md-12 align-content-lg-center">
+            <img src="~/images/wine-bottles.png" />"
+            <h3>Welcome To Wine Cellar</h3>
+            <div>
+                @*<div id="loginToggle">Login</div>*@
+                <form method="post">
+                    <div class="form-group row">
+                        <label for="username">Username:</label>
+                        <input class="form-control" id="username" type="text" />
+                    </div>
+                    <div class="form-group row">
+                        <label for="password">Password:</label>
+                        <input class="form-control" id="password" type="password" />
+                    </div>
+                    <div class="custom-control custom-switch form-group row">
+                        <input class="custom-control-input" id="rememberMe" type="checkbox" />
+                        <label class="custom-control-label" for="rememberMe">Remember Me?</label>
+                    </div>
+                    <div class="form-group" row>
+                        <input class="btn-default" id="login" type="submit" value="Login" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
