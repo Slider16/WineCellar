@@ -12,6 +12,8 @@
             <div class="border bg-light rounded p-1">
                 <img src="~/images/wine-bottles.png" class="img-fluid" alt="@wine.Name" />"
                 <h5><a href="@wine.Links.FirstOrDefault(l => l.Rel.Equals("filter_by_id"))?.Href">@wine.Name</a></h5>
+                <h5><a class="nav-link"  asp-controller="App" asp-action="WineForm">@wine.Name</a></h5>
+
                 <ul>
                     <li>Vineyard: @wine.Vineyard</li>
                     <li>Location: @wine.Location </li>

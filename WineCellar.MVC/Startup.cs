@@ -28,7 +28,10 @@ namespace WineCellar.Net.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            
+            services.AddRazorPages()
+                    .AddRazorRuntimeCompilation();
+            
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());            
                                                                  
             var wineCellarAPIBaseUrl = Configuration.GetSection("WineCellarAPIBaseUrl").GetSection("URL").Value ??
@@ -47,6 +50,7 @@ namespace WineCellar.Net.MVC
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             
             app.UseStaticFiles();

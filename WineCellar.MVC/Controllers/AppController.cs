@@ -41,5 +41,10 @@ namespace WineCellar.Net.MVC.Controllers
         {
             return View();
         }
+
+        public IActionResult WineForm()
+        {
+            return View();
+        }
     }
 }

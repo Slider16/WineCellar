@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WineCellar.API</name>
+    </assembly>
+    <members>
+        <member name="T:WineCellar.Net.API.Controllers.VendorController">
+            <summary>
+            The MVC based controller for Vendors without View support
+            </summary>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.VendorController.#ctor(Microsoft.Extensions.Logging.ILogger{WineCellar.Net.API.Controllers.VendorController},WineCellar.Net.API.Repositories.IVendorRepository,AutoMapper.IMapper)">
+            <summary>
+            The main VendorController constructor with parameters necessary for dependency injection
+            </summary>
+            <param name="logger">The ILogger type of VendorController for dependency injection</param>
+            <param name="service">The IVendorService for dependency injection</param>
+            <param name="mapper">Dependency injection for AutoMapper</param>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.VendorController.GetVendorsAsync">
+            <summary>
+            Get a paged list, size a page count based on query string, of all vendors in the database
+            </summary>
+            <returns>An ActionResult of type IEnumerable of VendorDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.VendorController.GetVendorAsync(System.String)">
+            <summary>
+            Get a vendor by id
+            </summary>
+            <param name="id">The id of the Vendor to get</param>
+            <returns>An ActionResult of type VendorDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.VendorController.CreateVendorAsync(WineCellar.Net.API.Models.VendorForCreationDto)">
+            <summary>
+            Create a new Vendor
+            </summary>
+            <param name="vendorForCreationDto">A data transfer object representation of the Vendor to create</param>
+            <returns>An ActionResult of type VendorDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.VendorController.UpdateVendorAsync(System.String,WineCellar.Net.API.Models.VendorForUpdateDto)">
+            <summary>
+            Update a Vendor.  Creates a new Vendor entity if vendor not found
+            </summary>
+            <param name="id">The id of the Vendor to update</param>
+            <param name="vendorForUpdateDto">A data transfer object representation of the Vendor to update or create if not found</param>
+            <returns>An ActionResult of type NoContent</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.VendorController.DeleteVendorAsync(System.String)">
+            <summary>
+            Deletes a vendor by id
+            </summary>
+            <param name="id">The id of the Vendor to delete</param>
+            <returns>An ActionResult of type NoContent</returns>
+        </member>
+        <member name="T:WineCellar.Net.API.Controllers.WineController">
+            <summary>
+            The MVC based controller for Wines without view support
+            </summary>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WineController.#ctor(Microsoft.Extensions.Logging.ILogger{WineCellar.Net.API.Controllers.WineController},WineCellar.Net.API.Repositories.IWineRepository,AutoMapper.IMapper)">
+            <summary>
+            The main WineController constructor with parameters necessary for dependency injection
+            </summary>
+            <param name="logger">The ILogger type of VendorController for dependency injection</param>
+            <param name="service">The IVendorService for dependency injection</param>
+            <param name="mapper">Dependency injection for AutoMapper</param>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WineController.GetWinesAsync">
+            <summary>
+            Get a paged list of all wines in the database. List size and page count based on query string
+            </summary>
+            <returns>An ActionResult of type IEnumerable of WineDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WineController.GetWineAsync(System.String)">
+            <summary>
+            Get a wine by id
+            </summary>
+            <param name="id">The id of the Wine to get</param>
+            <returns>An ActionResult of type WineDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WineController.CreateWineAsync(WineCellar.Net.API.Models.WineForCreationDto)">
+            <summary>
+            Create a new wine
+            </summary>
+            <param name="wineForCreationDto">A data transfer object representation of the Wine to create</param>
+            <returns>An ActionResult of type WineDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WineController.UpdateWineAsync(System.String,WineCellar.Net.API.Models.WineForUpdateDto)">
+            <summary>
+            Update a Wine.  Creates a new Wine entity if wine not found
+            </summary>
+            <param name="id">The id of the Wine to update</param>
+            <param name="wineForUpdateDto">A data transfer object representation of the Wine to update or create if not found</param>
+            <returns>An ActionResult of NoContent</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WineController.DeleteWineAsync(System.String)">
+            <summary>
+            Delete a Wine by id
+            </summary>
+            <param name="id">The id of the Wine to delete</param>
+            <returns>An ActionResult of type NoContent</returns>
+        </member>
+        <member name="T:WineCellar.Net.API.Controllers.WinePurchaseController">
+            <summary>
+            The MVC based controller for WinePurchases without view support
+            </summary>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WinePurchaseController.#ctor(Microsoft.Extensions.Logging.ILogger{WineCellar.Net.API.Controllers.WinePurchaseController},WineCellar.Net.API.Repositories.IWinePurchaseRepository,WineCellar.Net.API.Repositories.IWineRepository,AutoMapper.IMapper)">
+            <summary>
+            The main WinePurchaseController constructor with parameters necessary for dependency injection
+            </summary>
+            <param name="logger">The ILogger type of WinePurchaseController for dependency injection</param>
+            <param name="service">The IWinePurchaseService for dependency injection</param>
+            <param name="wineService">The IWineService for dependency injection</param>
+            <param name="mapper">Depenpency injection for AutoMapper</param>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WinePurchaseController.GetWinePurchases(System.String)">
+            <summary>
+            Get a paged list, size a page count based on query string, of all wine purchases for the specified wine
+            </summary>
+            <param name="wineId">The Id of the Wine for which to retrieve purchases</param>
+            <returns>An ActionResult of type IEnumerable of WinePurchaseDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WinePurchaseController.GetWinePurchaseAsync(System.String,System.String)">
+            <summary>
+            Get a wine purchase by wineId and purchaseId
+            </summary>
+            <param name="wineId">The Id of the Wine for which to retrieve a purchase</param>
+            <param name="winePurchaseId"></param>
+            <returns>An ActionResult of type WinePurchaseDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WinePurchaseController.CreateWinePurchaseAsync(System.String,WineCellar.Net.API.Models.WinePurchaseForCreationDto)">
+            <summary>
+            Create a new wine purchase
+            </summary>
+            <param name="wineId">The Id of the Wine for which to create a purchase</param>
+            <param name="winePurchaseForCreationDto">A data transfer object respresentation of the WinePurchase to create</param>
+            <returns>An ActionResult of type WinePurchaseDto</returns>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WinePurchaseController.UpdateWinePurchaseAsync(System.String,System.String,WineCellar.Net.API.Models.WinePurchaseForUpdateDto)">
+            <summary>
+            Update a wine purchase.  Creates new wine purchase if wine purchase not found
+            </summary>
+            <param name="wineId">The id of the Wine for which to update a purchase</param>
+            <param name="winePurchaseId">The id of WinePurchase to update</param>
+            <param name="winePurchaseForUpdateDto">A data transfer object representation of the WinePurchase to update</param>
+        </member>
+        <member name="M:WineCellar.Net.API.Controllers.WinePurchaseController.DeleteWinePurchaseAsync(System.String,System.String)">
+            <summary>
+            Delete a WinePurchase by id
+            </summary>
+            <param name="wineId">The id of the Wine for which to delete a purchase</param>
+            <param name="winePurchaseId">The id of the WinePurchase to delete</param>
+        </member>
+    </members>
+</doc>
