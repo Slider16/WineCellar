@@ -53,6 +53,11 @@ namespace WineCellar.Net.API
 
             //services.AddTransient<IWineService, MockWineService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
+
             services.AddSwaggerGen(setupAction =>
             {
                 setupAction.SwaggerDoc("WineCellarOpenAPISpecification", new Microsoft.OpenApi.Models.OpenApiInfo()
@@ -93,6 +98,8 @@ namespace WineCellar.Net.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("Open");
 
             app.UseSwagger();
 

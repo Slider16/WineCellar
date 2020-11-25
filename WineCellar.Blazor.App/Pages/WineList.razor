@@ -1,0 +1,40 @@
+﻿@page "/winelist"
+
+
+
+<h3>WineList</h3>
+
+@if (Wines == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Vineyard</th>
+                <th>Location</th>
+                <th>Year</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var wine in Wines)
+            {
+            <tr>
+                <td>@wine.Id</td>
+                <td>@wine.Name</td>
+                <td>@wine.Vineyard</td>
+                <td>@wine.Location</td>
+                <td>@wine.Year</td>
+                <td>@wine.Notes</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
