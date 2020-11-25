@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WineCellar.Blazor.App\WineCellar.Blazor.AppAssembly.csproj" />
+    <ProjectReference Include="..\WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj" />
   </ItemGroup>
 
 </Project>

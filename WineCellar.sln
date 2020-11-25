@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.API", "WineCella
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.API.Tests", "WineCellar.API.Tests\WineCellar.API.Tests.csproj", "{E7CB987C-5593-4BE3-BEAC-A6646283D3C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.AppAssembly", "WineCellar.Blazor.App\WineCellar.Blazor.AppAssembly.csproj", "{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.UI", "WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj", "{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.Client", "WineCellar.Blazor.Client\WineCellar.Blazor.Client.csproj", "{3AEDEFF3-6454-447E-871C-8546CD581038}"
 EndProject

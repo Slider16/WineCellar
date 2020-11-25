@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WineCellar.Blazor.AppAssembly.Services;
+using WineCellar.Blazor.UI.Services;
 using WineCellar.Blazor.Shared.Models;
 
-namespace WineCellar.Blazor.AppAssembly.Pages
+namespace WineCellar.Blazor.UI.Pages
 {
     public partial class WineList: ComponentBase
     {

@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WineCellar.Blazor.Shared.Models;
 
-namespace WineCellar.Blazor.AppAssembly.Services
+namespace WineCellar.Blazor.UI.Services
 {
     public class WineDataService : IWineDataService
     {
