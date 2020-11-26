@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.Shared", "WineCellar.Blazor.Shared\WineCellar.Blazor.Shared.csproj", "{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WineCellar.Blazor.Server", "WineCellar.Blazor.Server\WineCellar.Blazor.Server.csproj", "{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
