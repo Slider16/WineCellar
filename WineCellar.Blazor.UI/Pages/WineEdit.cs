@@ -43,24 +43,29 @@ namespace WineCellar.Blazor.UI.Pages
         }
         protected async Task HandleValidSubmit()
         {
-            //if (!int.TryParse(Year, out int year))
-            //    throw new ArgumentException("Input year is not valid.");
 
-            //Wine.Year = year;
-
-            var result = await WineDataService.AddWineAsync(Wine).ConfigureAwait(false);
-
-            if (result != null)
+            if (!string.IsNullOrEmpty(WineId))
             {
+                await WineDataService.UpdateWineAsync(Wine).ConfigureAwait(false);
                 StatusClass = "alert-success";
-                Message = "New wine added successfully.";
-                Saved = true;                
+                Message = "Wine updated successfully.";
+                Saved = true;
             }
             else
             {
-                StatusClass = "alert-danger";
-                Message = "An error has occured";
-                Saved = false;
+                var result = await WineDataService.AddWineAsync(Wine).ConfigureAwait(false);
+                if (result != null)
+                {
+                    StatusClass = "alert-success";
+                    Message = "New wine added successfully.";
+                    Saved = true;
+                }
+                else
+                {
+                    StatusClass = "alert-danger";
+                    Message = "An error has occured";
+                    Saved = false;
+                }
             }
         }
 

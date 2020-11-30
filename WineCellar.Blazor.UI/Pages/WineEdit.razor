@@ -11,7 +11,7 @@
 <div class="entity-edit">
     @if (!Saved)
     {
-        <h1 class="modal-title">Wine Details</h1>
+        <h2 >Details for @Wine.Name</h2>
         <EditForm Model="@Wine" OnValidSubmit="@HandleValidSubmit">
            <ObjectGraphDataAnnotationsValidator />
 
@@ -39,11 +39,11 @@
                 <label for="notes" class="col-sm-3">Notes: </label>
                 <InputTextArea id="notes" class="form-control col-sm-8" @bind-Value="@Wine.Notes" placeholder="Enter tasting notes about the wine"></InputTextArea>
             </div>
-            <div class="form-group row">
-                <button type="submit" class="btn btn-primary">Add Wine</button>
+            <div class="form-group row col-sm-3">
+                <button type="submit" class="btn btn-primary">Save</button>
                 @if (!string.IsNullOrEmpty(Wine.Id))
                 {
-                    <a class="btn btn-danger float-right" @onclick="DeleteWine">Delete</a>
+                    <a class="btn btn-danger" @onclick="DeleteWine">Delete</a>
                 }
             </div>
         </EditForm>

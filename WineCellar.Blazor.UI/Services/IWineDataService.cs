@@ -12,6 +12,8 @@ namespace WineCellar.Blazor.UI.Services
 
         Task<Wine> AddWineAsync(Wine wine);
 
+        Task UpdateWineAsync(Wine wine);
+
         Task<Wine> GetWineByIdAsync(string wineId);
 
         Task DeleteWine(string wineId);

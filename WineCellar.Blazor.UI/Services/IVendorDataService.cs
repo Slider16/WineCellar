@@ -10,6 +10,8 @@ namespace WineCellar.Blazor.UI.Services
 
         Task<Vendor> AddVendorAsync(Vendor vendor);
 
+        Task UpdateVendorAsync(Vendor vendor);
+
         Task<Vendor> GetVendorByIdAsync(string vendorId);
 
         Task DeleteVendor(string vendorId);

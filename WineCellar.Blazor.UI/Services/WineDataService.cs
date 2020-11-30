@@ -55,5 +55,15 @@ namespace WineCellar.Blazor.UI.Services
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Error deleting wine with id: {wineId}.");
         }
+
+        public async Task UpdateWineAsync(Wine wine)
+        {
+            var wineJson = new StringContent(JsonSerializer.Serialize(wine), Encoding.UTF8, "application/json");
+            
+            var response = await _httpClient.PutAsync($"api/wines/{wine.Id}", wineJson).ConfigureAwait(false);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Error updating wine with id: {wine.Id}");
+        }
     }
 }

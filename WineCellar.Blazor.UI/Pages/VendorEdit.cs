@@ -42,26 +42,36 @@ namespace WineCellar.Blazor.UI.Pages
 
 
         protected async Task HandleValidSubmit()
-        {     
+        {
             if (!string.IsNullOrEmpty(WebsiteUrl))
             {
                 Vendor.WebSite = new Uri(WebsiteUrl);
             }
 
-            var result = await VendorDataService.AddVendorAsync(Vendor).ConfigureAwait(false);
-
-            if (result != null)
+            if (!string.IsNullOrEmpty(VendorId))
             {
+                await VendorDataService.UpdateVendorAsync(Vendor).ConfigureAwait(false);
                 StatusClass = "alert-success";
-                Message = "New vendor added successfully.";
+                Message = "Vendor updated successfully.";
                 Saved = true;
             }
             else
             {
-                StatusClass = "alert-danger";
-                Message = "An error has occured";
-                Saved = false;
-            }
+                var result = await VendorDataService.AddVendorAsync(Vendor).ConfigureAwait(false);
+
+                if (result != null)
+                {
+                    StatusClass = "alert-success";
+                    Message = "New vendor added successfully.";
+                    Saved = true;
+                }
+                else
+                {
+                    StatusClass = "alert-danger";
+                    Message = "An error has occured";
+                    Saved = false;
+                }
+            }            
         }
 
         public async Task DeleteVendor()

@@ -57,5 +57,15 @@ namespace WineCellar.Blazor.UI.Services
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Error deleting vendor with id: {vendorId}.");
         }
+
+        public async Task UpdateVendorAsync(Vendor vendor)
+        {
+            var vendorJson = new StringContent(JsonSerializer.Serialize(vendor), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"api/vendors/{vendor.Id}", vendorJson).ConfigureAwait(false);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Error updating wine with id: {vendor.Id}");
+        }
     }
 }
