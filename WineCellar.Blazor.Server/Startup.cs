@@ -10,6 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WineCellar.Blazor.UI.Services;
+//using Blazorise;
+//using Blazorise.Bootstrap;
+//using Blazorise.Icons.FontAwesome;
+
 
 namespace WineCellar.Blazor.Server
 {
@@ -26,6 +30,14 @@ namespace WineCellar.Blazor.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //Blazorise Services
+            //services.AddBlazorise(options =>
+            //{
+            //    options.ChangeTextOnKeyPress = true; // optional
+            //})
+            //.AddBootstrapProviders()
+            //.AddFontAwesomeIcons();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
@@ -34,6 +46,10 @@ namespace WineCellar.Blazor.Server
                 client.BaseAddress = new Uri("http://localhost:7777");
             });
             
+            services.AddHttpClient<IVendorDataService, VendorDataService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:7777");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +70,10 @@ namespace WineCellar.Blazor.Server
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //app.ApplicationServices
+            //    .UseBootstrapProviders()
+            //    .UseFontAwesomeIcons();
 
             app.UseEndpoints(endpoints =>
             {

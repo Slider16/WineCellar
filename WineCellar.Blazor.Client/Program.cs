@@ -25,7 +25,27 @@ namespace WineCellar.Blazor.Client
                 client.BaseAddress = new Uri("http://localhost:7777");
             });
 
+            builder.Services.AddHttpClient<IVendorDataService, VendorDataService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:7777");
+            });
+
+            //builder.Services.AddBlazorise(options =>
+            //{
+            //    options.ChangeTextOnKeyPress = true;
+            //})
+            //.AddBootstrapProviders()
+            //.AddFontAwesomeIcons();
+
+            // Disabled this default line to enable bits for Blazorise
             await builder.Build().RunAsync();
+
+            //var host = builder.Build();
+            //host.Services
+            //    .UseBootstrapProviders()
+            //    .UseFontAwesomeIcons();
+
+            //await host.RunAsync();                
         }
     }
 }

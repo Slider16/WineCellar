@@ -1,0 +1,70 @@
+﻿@page "/vendoredit"
+@page "/vendoredit/{VendorId}"
+
+@using WineCellar.Blazor.Shared
+@using WineCellar.Blazor.UI.Services
+
+<TopNavBar />
+
+<div class="entity-edit">
+    @if (!Saved)
+    {
+        <h1 class="modal-title">Vendor Details</h1>
+        <EditForm Model="@Vendor" OnValidSubmit="@HandleValidSubmit">
+            <ObjectGraphDataAnnotationsValidator />
+
+            <div class="form-group row">
+                <label for="name" class="col-sm-3">Name: </label>
+                <InputText id="name" class="form-control col-sm-8" @bind-Value="@Vendor.Name"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.Name)" />
+            </div>
+            <div class="form-group row">
+                <label for="address" class="col-sm-3">Address: </label>
+                <InputText id="address" class="form-control col-sm-8" @bind-Value="@Vendor.Address"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.Address)" />
+            </div>
+            <div class="form-group row">
+                <label for="city" class="col-sm-3">City: </label>
+                <InputText id="city" class="form-control col-sm-8" @bind-Value="@Vendor.City"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.City)" />
+            </div>
+            <div class="form-group row">
+                <label for="state" class="col-sm-3">State: </label>
+                <InputText id="state" class="form-control col-sm-8" @bind-Value="@Vendor.State"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.State)" />
+            </div>
+            <div class="form-group row">
+                <label for="zipcode" class="col-sm-3">Zip Code: </label>
+                <InputText id="zipcode" class="form-control col-sm-8" @bind-Value="@Vendor.ZipCode"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.ZipCode)" />
+            </div>
+            <div class="form-group row">
+                <label for="country" class="col-sm-3">Country: </label>
+                <InputText id="country" class="form-control col-sm-8" @bind-Value="@Vendor.Country"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.Country)" />
+            </div>
+            <div class="form-group row">
+                <label for="phone" class="col-sm-3">Phone: </label>
+                <InputText id="phone" class="form-control col-sm-8" @bind-Value="@Vendor.Phone"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vendor.Phone)" />
+            </div>
+            <div class="form-group row">
+                <label for="website" class="col-sm-3">Website: </label>
+                <InputText id="website" class="form-control col-sm-8" @bind-Value="@WebsiteUrl"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => WebsiteUrl)" />
+            </div>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary">Add Vendor</button>
+                @if (!string.IsNullOrEmpty(Vendor.Id))
+                {
+                    <a class="btn btn-danger float-right" @onclick="DeleteVendor">Delete</a>
+                }
+            </div>
+        </EditForm>
+    }
+    else
+    {
+        <div class="alert @StatusClass">@Message</div>
+        <a class="btn btn-outline-primary" @onclick="@NavigateToVendorList">Back to vendor list</a>
+    }
+</div>

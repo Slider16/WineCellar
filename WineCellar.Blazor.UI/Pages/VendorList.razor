@@ -1,0 +1,46 @@
+﻿@page "/vendorlist"
+@using WineCellar.Blazor.Shared.Models
+
+<TopNavBar />
+
+@if (Vendors == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div id="vendors" class="widget">
+        <h3>Vendors<a href="/vendoredit" class="btn btn-primary float-right" >Add Vendor</a></h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Country</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vendor in Vendors)
+                {
+                <tr>
+                    <td><a href="/vendoredit/@vendor.Id">@vendor.Id</a></td>
+                    <td>@vendor.Name</td>
+                    <td>@vendor.Address</td>
+                    <td>@vendor.City</td>
+                    <td>@vendor.State</td>
+                    <td>@vendor.ZipCode</td>
+                    <td>@vendor.Country</td>
+                    <td>@vendor.Phone</td>
+                    <td>@vendor.WebSite</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

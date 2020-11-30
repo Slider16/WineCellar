@@ -1,0 +1,58 @@
+﻿@page "/wineedit"
+@page "/wineedit/{WineId}"
+
+@using WineCellar.Blazor.Shared
+@using WineCellar.Blazor.UI.Services
+
+
+
+<TopNavBar/>
+
+<div class="entity-edit">
+    @if (!Saved)
+    {
+        <h1 class="modal-title">Wine Details</h1>
+        <EditForm Model="@Wine" OnValidSubmit="@HandleValidSubmit">
+           <ObjectGraphDataAnnotationsValidator />
+
+
+           <div class="form-group row">
+               <label for="name" class="col-sm-3">Name: </label>
+               <InputText id="name" class="form-control col-sm-8" @bind-Value="@Wine.Name" placeholder="Enter name"></InputText>
+               <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.Name)" />
+           </div>
+           <div class="form-group row">
+               <label for="vineyard" class="col-sm-3">Vineyard: </label>
+               <InputText id="vineyard" class="form-control col-sm-8" @bind-Value="@Wine.Vineyard" placeholder="Enter the name of the vineyard"></InputText>
+               <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.Vineyard)" />
+           </div>
+            <div class="form-group row">
+                <label for="location" class="col-sm-3">Location: </label>
+                <InputText id="location" class="form-control col-sm-8" @bind-Value="@Wine.Location" placeholder="Enter the location of the vineyard"></InputText>
+            </div>
+            <div class="form-group row">
+                <label for="year" class="col-sm-3">Year: </label>
+                <InputNumber id="year" class="form-control col-sm-8" @bind-Value="@Wine.Year" placeholder="Enter the year of the wine"></InputNumber>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.Year)" />
+            </div>
+            <div class="form-group row">
+                <label for="notes" class="col-sm-3">Notes: </label>
+                <InputTextArea id="notes" class="form-control col-sm-8" @bind-Value="@Wine.Notes" placeholder="Enter tasting notes about the wine"></InputTextArea>
+            </div>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-primary">Add Wine</button>
+                @if (!string.IsNullOrEmpty(Wine.Id))
+                {
+                    <a class="btn btn-danger float-right" @onclick="DeleteWine">Delete</a>
+                }
+            </div>
+        </EditForm>
+    }
+    else
+    {
+        <div class="alert @StatusClass">@Message</div>
+        <a class="btn btn-outline-primary" @onclick="@NavigateToWineList">Back to wine list</a>
+    }
+
+
+</div>
