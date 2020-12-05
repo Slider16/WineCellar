@@ -18,7 +18,7 @@ namespace WineCellar.Net.API.Controllers
     /// </summary>
     [Produces("application/json", "application/xml")]
     [Route("api/wines")]
-    [ApiController]   
+    [ApiController]
     public class WineController : ControllerBase
     {
         private readonly ILogger<WineController> _logger;
@@ -35,7 +35,7 @@ namespace WineCellar.Net.API.Controllers
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
-            
+
             _service = service ??
                 throw new ArgumentNullException(nameof(service));
 
@@ -45,25 +45,36 @@ namespace WineCellar.Net.API.Controllers
         }
 
         /// <summary>
-        /// Get a paged list of all wines in the database. List size and page count based on query string
+        /// Get a paged list of all wines in the database.  Can use either of the optional parameters Year, or Vineyard starts with vineyard text. List size and page count based on query string
         /// </summary>
         /// <returns>An ActionResult of type IEnumerable of WineDto</returns>
         [HttpGet(Name = "GetWinesAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<WineDto>>> GetWinesAsync()
+        public async Task<ActionResult<IEnumerable<WineDto>>> GetWinesAsync(int year = 0, string vineyard = "")
         {
-            var winesFromService = await _service.GetWinesAsync().ConfigureAwait(false);
-
-            var wineDtos = _mapper.Map<IEnumerable<WineDto>>(winesFromService);
-
-            //Add a "links" collection to each Wine object returned.
-            foreach(var wineDto in wineDtos)
+            if (year == 0 && string.IsNullOrEmpty(vineyard))
             {
-                wineDto.Links = CreateLinksForWine(wineDto);
+                var winesFromService = await _service.GetWinesAsync().ConfigureAwait(false);
+                return MapWinesToDto(winesFromService);
+            }
+            else
+            {
+                return await (year == 0 ? GetWinesByVineyardAsync(vineyard) : GetWinesByYearAsync(year));
             }
 
-            return Ok(wineDtos);
+            async Task<ActionResult<IEnumerable<WineDto>>> GetWinesByYearAsync(int year)
+            {
+                var winesFromService = await _service.GetWinesByYearAsync(year).ConfigureAwait(false);
+                return MapWinesToDto(winesFromService);
+            }
+
+            async Task<ActionResult<IEnumerable<WineDto>>> GetWinesByVineyardAsync(string vineyard)
+            {
+                var winesFromService = await _service.GetWinesByVineyardAsync(vineyard).ConfigureAwait(false);
+                return MapWinesToDto(winesFromService);
+            }
         }
+
 
         /// <summary>
         /// Get a wine by id
@@ -84,7 +95,7 @@ namespace WineCellar.Net.API.Controllers
             }
 
             _logger.LogDebug("Mapping wine from service to WineDto.");
-            
+
             var wineDto = _mapper.Map<WineDto>(wineFromService);
 
             // Add a "links collection" to the wineDto object returned.
@@ -186,6 +197,19 @@ namespace WineCellar.Net.API.Controllers
             await _service.DeleteWineAsync(id).ConfigureAwait(false);
 
             return NoContent();
+        }
+
+        private ActionResult<IEnumerable<WineDto>> MapWinesToDto(IEnumerable<Wine> winesFromService)
+        {
+            var wineDtos = _mapper.Map<IEnumerable<WineDto>>(winesFromService);
+
+            //Add a "links" collection to each Wine object returned.
+            foreach (var wineDto in wineDtos)
+            {
+                wineDto.Links = CreateLinksForWine(wineDto);
+            }
+
+            return Ok(wineDtos);
         }
 
         private List<LinkDto> CreateLinksForWine(WineDto wineDto)

@@ -7,6 +7,8 @@ namespace WineCellar.Net.API.Repositories
     public interface IWineRepository
     {
         Task<IEnumerable<Wine>> GetWinesAsync();
+        Task<IEnumerable<Wine>> GetWinesByVineyardAsync(string vineyard);
+        Task<IEnumerable<Wine>> GetWinesByYearAsync(int year);
         Task<Wine> GetWineAsync(string id);
         Task<Wine> CreateWineAsync(Wine wine);
         Task UpdateWineAsync(string id, Wine wineIn);

@@ -73,5 +73,15 @@ namespace WineCellar.Net.API.Tests
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Wine>> GetWinesByVineyardAsync(string vineyard)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Wine>> GetWinesByYearAsync(int year)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

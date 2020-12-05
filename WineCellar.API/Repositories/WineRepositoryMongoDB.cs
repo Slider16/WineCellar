@@ -56,5 +56,17 @@ namespace WineCellar.Net.API.Repositories
             var task = await _wines.FindAsync(wine => wine.Id == wineId).ConfigureAwait(false);
             return (await task.FirstOrDefaultAsync().ConfigureAwait(false) != null);
         }
+
+        public async Task<IEnumerable<Wine>> GetWinesByVineyardAsync(string vineyard)
+        {
+            var task = await _wines.FindAsync(Builders<Wine>.Filter.Where(f => f.Vineyard.StartsWith(vineyard)));
+            return await task.ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<Wine>> GetWinesByYearAsync(int year)
+        {           
+            var task = await _wines.FindAsync<Wine>(Builders<Wine>.Filter.Where(w => w.Year == year));           
+            return await task.ToListAsync().ConfigureAwait(false);
+        }
     }
 }
