@@ -74,14 +74,14 @@ namespace WineCellar.Net.API.Tests
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Wine>> GetWinesByVineyardAsync(string vineyard)
+        public async Task<IEnumerable<Wine>> GetWinesByVineyardAsync(string vineyard)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_wineList.Where(wine => wine.Vineyard.StartsWith(vineyard)).ToList()).ConfigureAwait(false);            
         }
 
-        public Task<IEnumerable<Wine>> GetWinesByYearAsync(int year)
+        public async Task<IEnumerable<Wine>> GetWinesByYearAsync(int year)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_wineList.Where(wine => wine.Year == year).ToList()).ConfigureAwait(false);
         }
     }
 }
