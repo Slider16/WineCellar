@@ -6,14 +6,15 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WineCellar.Net.API.AutoMapperProfiles;
-using WineCellar.Net.API.Controllers;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
+using WineCellar.API.AutoMapperProfiles;
+using WineCellar.API.Controllers;
+using WineCellar.API.Entities;
+using WineCellar.API.Repositories;
+using WineCellar.API.Models;
 using Xunit;
+using WineCellar.API.Filters;
 
-namespace WineCellar.Net.API.Tests
+namespace WineCellar.API.Tests
 {
     public class WineControllerTests
     {
@@ -80,7 +81,7 @@ namespace WineCellar.Net.API.Tests
             _controller.Url = Substitute.For<IUrlHelper>();
 
             // Act
-            var actionResult = await _controller.GetWinesAsync();
+            var actionResult = await _controller.GetWinesAsync(); ;
 
             // Assert
             var result = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -95,7 +96,7 @@ namespace WineCellar.Net.API.Tests
             // Arrange
             var wineList = new List<Wine>()
             {
-                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Year = 2008 },
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Vineyard = "Hills of Southern California Vineyards", Bin = 40, Location = "California", Notes = "Just goes great with everything.", Year = 2008 },
                 new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.", Year = 2011 },
                 new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
             };
@@ -114,7 +115,7 @@ namespace WineCellar.Net.API.Tests
             _controller.Url = Substitute.For<IUrlHelper>();
 
             // Act
-            var actionResult = await _controller.GetWinesAsync(vineyard: "Aussie");
+            var actionResult = await _controller.GetWinesAsync(0, 0, "Aussie").ConfigureAwait(false);
 
             // Assert
             var result = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -155,6 +156,41 @@ namespace WineCellar.Net.API.Tests
             var wines = Assert.IsType<List<WineDto>>(result.Value);
             Assert.Equal(2, wines.Count);
             Assert.True(wines.TrueForAll(w => w.Year == 2011));
+        }
+
+
+        [Fact]
+        public async Task GetWines_WhenCalled_ReturnsWinesByYearAndBin()
+        {
+            // Arrange
+            var wineList = new List<Wine>()
+            {
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Good Year Wine", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Bin = 40, Year = 2011 },
+                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.",  Year = 2011 },
+                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
+            };
+
+            IWineRepository wineService = GetWineServiceStub(wineList);
+
+            var response = Substitute.For<HttpResponse>();
+            var httpContext = Substitute.For<HttpContext>();
+            httpContext.Items.Add("response", response);
+
+            var factory = new LoggerFactory();
+            var logger = factory.CreateLogger<WineController>();
+
+            _controller = new WineController(logger, wineService, _mapper);
+            _controller.ControllerContext.HttpContext = httpContext;
+            _controller.Url = Substitute.For<IUrlHelper>();
+
+            // Act
+            var actionResult = await _controller.GetWinesAsync(2011, 40).ConfigureAwait(false);
+
+            // Assert
+            var result = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var wines = Assert.IsType<List<WineDto>>(result.Value);
+            Assert.Single(wines);
+            Assert.True(wines.TrueForAll(w => w.Year == 2011 && w.Bin == 40));
         }
 
 

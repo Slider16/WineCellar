@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
+using WineCellar.API.Entities;
+using WineCellar.API.Repositories;
+using WineCellar.API.Models;
 
-namespace WineCellar.Net.API.Controllers
+namespace WineCellar.API.Controllers
 {
     /// <summary>
     /// The MVC based controller for Vendors without View support

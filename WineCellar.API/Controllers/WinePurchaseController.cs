@@ -7,11 +7,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
+using WineCellar.API.Entities;
+using WineCellar.API.Repositories;
+using WineCellar.API.Models;
 
-namespace WineCellar.Net.API.Controllers
+namespace WineCellar.API.Controllers
 {
     /// <summary>
     /// The MVC based controller for WinePurchases without view support
@@ -56,7 +56,7 @@ namespace WineCellar.Net.API.Controllers
                 return NotFound();
             }
 
-            var winePurchasesFromService = await _service.GetWinePurchasesAsync().ConfigureAwait(false);
+            var winePurchasesFromService = await _service.GetWinePurchasesAsync(wineId).ConfigureAwait(false);
 
             var winePurchasesDto = _mapper.Map<IEnumerable<WinePurchaseDto>>(winePurchasesFromService);
 

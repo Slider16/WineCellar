@@ -1,4 +1,4 @@
-﻿namespace WineCellar.Net.API.Interfaces
+﻿namespace WineCellar.API.Interfaces
 {
     public interface IWineCellarDatabaseSettings
     {

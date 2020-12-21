@@ -8,11 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
-using WineCellar.Net.API.Interfaces;
+using WineCellar.API.Repositories;
+using WineCellar.API.Models;
+using WineCellar.API.Interfaces;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 
-namespace WineCellar.Net.API
+namespace WineCellar.API
 {
     public class Startup
     {
@@ -26,6 +28,14 @@ namespace WineCellar.Net.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Trying to do loggging to the Console with my MongoEventsLogger in Helpers folder.
+            services.AddLogging(builder =>
+            {
+                builder.AddConfiguration(Configuration.GetSection("Logging"))
+                       .AddConsole()
+                       .AddDebug();
+            });
+
             services.AddControllers(setupAction =>
             {
 
@@ -50,6 +60,7 @@ namespace WineCellar.Net.API
              * singleton service lifetime.*/
             services.AddSingleton<IWineRepository, WineRepositoryMongoDB>();
             services.AddSingleton<IVendorRepository, VendorRepositoryMongoDB>();
+            services.AddSingleton<IWinePurchaseRepository, WinePurchaseRepositoryMongoDB>();
 
             //services.AddTransient<IWineService, MockWineService>();
 
@@ -78,6 +89,8 @@ namespace WineCellar.Net.API
                     },
                     TermsOfService = new Uri("https://www.slidersAPIs/termsofservice"),
                 });
+
+                //setupAction.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlCommentsFileFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
+using WineCellar.API.Entities;
 
-namespace WineCellar.Net.API.Models
+namespace WineCellar.API.Models
 {
     public class WineDto
     {
@@ -13,6 +13,7 @@ namespace WineCellar.Net.API.Models
         public string Vineyard { get; set; }
         public string Location { get; set; }
         public int Year { get; set; }
+        public int Bin { get; set; }
         public string Notes { get; set; }
         public List<LinkDto> Links { get; set; } 
             = new List<LinkDto>();

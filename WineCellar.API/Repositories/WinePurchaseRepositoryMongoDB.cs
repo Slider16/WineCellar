@@ -1,26 +1,30 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
+using WineCellar.API.Entities;
+using WineCellar.API.Interfaces;
 
-namespace WineCellar.Net.API.Repositories
+namespace WineCellar.API.Repositories
 {
     public class WinePurchaseRepositoryMongoDB : IWinePurchaseRepository
     {
-        //private readonly IMongoCollection<Wine> _wines;
+        private readonly IMongoCollection<Wine> _wines;
 
-        //public WinePurchaseServiceMongoDB(IWineCellarDatabaseSettings settings)
-        //{
-        //    var client = new MongoClient(settings.ConnectionString);
-        //    var database = client.GetDatabase(settings.DatabaseName);
-            
-        //    _wines = database.GetCollection<Wine>(settings.WinesCollectionName);
-        //}
-        public Task<WinePurchase> CreateWinePurchaseAsync(WinePurchase winePurchase)
+        public WinePurchaseRepositoryMongoDB(IWineCellarDatabaseSettings settings)
+        {
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+
+            _wines = database.GetCollection<Wine>(settings.WinesCollectionName);
+        }
+        public async Task<WinePurchase> CreateWinePurchaseAsync(WinePurchase winePurchase)
         {
             //var wineToUpdate = await _wines.FindAsync(wine => wine.Id == wineId).ConfigureAwait(false);
             //_wines.FindOneAndUpdateAsync(wine => wine.Id == wineId, new Document)
             throw new NotImplementedException();
+            
         }
 
         public Task DeleteWinePurchaseAsync(WinePurchase winePurchaseIn)
@@ -38,9 +42,16 @@ namespace WineCellar.Net.API.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<WinePurchase>> GetWinePurchasesAsync()
+        public async Task<IEnumerable<WinePurchase>> GetWinePurchasesAsync(string wineId)
         {
-            throw new NotImplementedException();
+            //_wines.Aggregate<Wine>()
+            //     .Lookup<Wine, WinePurchase, WinePurchase>(_wines,
+            //     wine => wine.Id,
+            //     winePurchase => winePurchase.Id,
+            //     wineP => wineP.PurchaseDate);
+
+            throw new NotImplementedException();            
+           
         }
 
         public Task UpdateWinePurchaseAsync(string id, WinePurchase winePurchaseIn)

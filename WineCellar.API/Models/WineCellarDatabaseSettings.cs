@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Interfaces;
+using WineCellar.API.Interfaces;
 
-namespace WineCellar.Net.API.Models
+namespace WineCellar.API.Models
 {
     public class WineCellarDatabaseSettings : IWineCellarDatabaseSettings
     {

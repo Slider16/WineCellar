@@ -1,10 +1,12 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
+using WineCellar.API.Entities;
 
-namespace WineCellar.API.Entities
+namespace WineCellar.API.Models
 {
-    public class Wine
+    // Using this to demonstrate Projections of a subset of fields for a given entity
+    public class WinePriceAdjustDto
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -12,37 +14,20 @@ namespace WineCellar.API.Entities
 
         [BsonElement("name")]
         public string Name { get; set; }
-        
+
         [BsonElement("vineyard")]
         public string Vineyard { get; set; }
-        
-        [BsonElement("location")]
-        public string Location { get; set; }
-        
-        [BsonElement("year")]
-        public int Year { get; set; }
-
-        [BsonElement("bin")]
-        public int Bin { get; set; }
 
         [BsonElement("sellPrice")]
         public decimal SellPrice { get; set; }
 
-        [BsonElement("notes")]
-        public string Notes { get; set; }
-
-        [BsonElement("__v")]
-        public int __v { get; set; }
-
         [BsonElement("purchases")]
         public List<WinePurchase> WinePurchases { get; set; }
-        
 
-        public Wine()
+        public WinePriceAdjustDto()
         {
             WinePurchases = new List<WinePurchase>();
         }
-
-
     }
+
 }

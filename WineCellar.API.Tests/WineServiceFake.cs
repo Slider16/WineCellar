@@ -1,16 +1,22 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Repositories;
+using WineCellar.API.Filters;
+using WineCellar.API.Entities;
+using WineCellar.API.Models;
+using WineCellar.API.Repositories;
 
-namespace WineCellar.Net.API.Tests
+namespace WineCellar.API.Tests
 {
     public class WineServiceFake : IWineRepository
     {
 
         private List<Wine> _wineList;
+
+        private IMongoCollection<Wine> _wineCollection;
 
         public WineServiceFake()
         {
@@ -54,8 +60,44 @@ namespace WineCellar.Net.API.Tests
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Wine>> GetWinesAsync()
+        public async Task<IEnumerable<Wine>> GetWinesAsync(WinesFilter filters)
         {
+            var filterDefinition = filters.ToFilterDefinition();
+
+            // Get a BsonDocumentSerializer needed by the Render function
+            var wineSerializer = BsonSerializer.SerializerRegistry.GetSerializer<Wine>();
+            var serializerRegistry = new BsonSerializerRegistry();
+
+            try
+            {
+                var filterBsonDocument = filterDefinition.Render(wineSerializer, serializerRegistry);
+                var year = filterBsonDocument?.Elements?.ToList().FirstOrDefault(e => e.Name == "year").Value?.AsInt32;
+                var bin = filterBsonDocument?.Elements?.ToList().FirstOrDefault(e => e.Name == "bin").Value?.AsInt32;
+
+                var vineyard = filterBsonDocument?.Elements?.ToList().FirstOrDefault(e => e.Name == "vineyard").Value?.AsString;
+
+                if (!string.IsNullOrEmpty(vineyard))
+                {
+                    await GetWinesByVineyardAsync(vineyard).ConfigureAwait(false);
+                }
+
+
+                if (year > 0)
+                {
+                    _wineList = _wineList.Where(w => w.Year == year)?.ToList();
+                }
+
+                if (bin > 0)
+                {
+                    _wineList = _wineList.Where(w => w.Bin == bin)?.ToList();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message},   InnerExec Message: {ex.InnerException?.Message}");
+            }
             return await Task.FromResult(_wineList).ConfigureAwait(false);
         }
 
@@ -74,14 +116,21 @@ namespace WineCellar.Net.API.Tests
             throw new NotImplementedException();
         }
 
+
         public async Task<IEnumerable<Wine>> GetWinesByVineyardAsync(string vineyard)
         {
-            return await Task.FromResult(_wineList.Where(wine => wine.Vineyard.StartsWith(vineyard)).ToList()).ConfigureAwait(false);            
+            return await Task.FromResult(_wineList.Where(wine => wine.Vineyard.StartsWith(vineyard)).ToList()).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Wine>> GetWinesByYearAsync(int year)
+        Task<IEnumerable<WinePriceAdjustDto>> IWineRepository.GetWinesForPriceAdjust()
         {
-            return await Task.FromResult(_wineList.Where(wine => wine.Year == year).ToList()).ConfigureAwait(false);
+            throw new NotImplementedException();
         }
+
+        // Not needed since implementing WinesFilter class
+        //public async Task<IEnumerable<Wine>> GetWinesByYearAsync(int year)
+        //{
+        //    return await Task.FromResult(_wineList.Where(wine => wine.Year == year).ToList()).ConfigureAwait(false);
+        //}
     }
 }

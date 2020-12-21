@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
+using WineCellar.API.Entities;
 
-namespace WineCellar.Net.API.Repositories
+namespace WineCellar.API.Repositories
 {
     public interface IVendorRepository
     {

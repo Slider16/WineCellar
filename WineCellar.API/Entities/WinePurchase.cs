@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 
-namespace WineCellar.Net.API.Entities
+namespace WineCellar.API.Entities
 {
     public class WinePurchase
     {

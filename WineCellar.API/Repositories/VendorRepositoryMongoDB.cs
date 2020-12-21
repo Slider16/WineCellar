@@ -1,10 +1,10 @@
 ﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Interfaces;
+using WineCellar.API.Entities;
+using WineCellar.API.Interfaces;
 
-namespace WineCellar.Net.API.Repositories
+namespace WineCellar.API.Repositories
 {
     public class VendorRepositoryMongoDB : IVendorRepository
     {

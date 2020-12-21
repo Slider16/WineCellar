@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
+using WineCellar.API.Entities;
 
-namespace WineCellar.Net.API.Repositories
+namespace WineCellar.API.Repositories
 {
     public interface IWinePurchaseRepository
     {
-        Task<IEnumerable<WinePurchase>> GetWinePurchasesAsync();
+        Task<IEnumerable<WinePurchase>> GetWinePurchasesAsync(string wineId);
         Task<WinePurchase> GetWinePurchaseAsync(string wineId, string winePurchaseId);
         Task<WinePurchase> CreateWinePurchaseAsync(WinePurchase winePurchase);
         Task UpdateWinePurchaseAsync(string id, WinePurchase winePurchaseIn);
