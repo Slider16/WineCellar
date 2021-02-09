@@ -17,7 +17,7 @@ namespace WineCellar.API.Controllers
     /// The MVC based controller for Vendors without View support
     /// </summary>
     [Produces("application/json", "application/xml")]
-    [Route("api/vendors")]
+    [Route("api/[controller]")]
     [ApiController]
     public class VendorController : ControllerBase
     {
@@ -44,7 +44,7 @@ namespace WineCellar.API.Controllers
         }
 
         /// <summary>
-        /// Get a paged list, size a page count based on query string, of all vendors in the database
+        /// Get a paged list of all vendors in the database to view and edit
         /// </summary>
         /// <returns>An ActionResult of type IEnumerable of VendorDto</returns>
         [HttpGet(Name = "GetVendorsAsync")]
@@ -142,8 +142,7 @@ namespace WineCellar.API.Controllers
             var vendorEntityToUpdate = await _service.GetVendorAsync(id).ConfigureAwait(false);
 
             if(vendorEntityToUpdate == null)
-            {
-                // Do an UPSERT
+            {                
                 var vendorToAdd = _mapper.Map<Vendor>(vendorForUpdateDto);
 
                 // This is what makes this PUT idempotent

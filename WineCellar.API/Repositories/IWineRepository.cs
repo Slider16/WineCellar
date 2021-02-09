@@ -17,7 +17,6 @@ namespace WineCellar.API.Repositories
         Task<Wine> GetWineAsync(string id);
         Task<Wine> CreateWineAsync(Wine wine);
         Task UpdateWineAsync(string id, Wine wineIn);
-        Task DeleteWineAsync(Wine wineIn);
         Task DeleteWineAsync(string id);
         Task<bool> WineExists(string wineId);
     }

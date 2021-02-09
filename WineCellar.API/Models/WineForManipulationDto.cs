@@ -10,8 +10,8 @@ namespace WineCellar.API.Models
     {
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
-
         public string Vineyard { get; set; }
+        public string VineyardId { get; set; }
         public string Location { get; set; }
         public int Year { get; set; }
 

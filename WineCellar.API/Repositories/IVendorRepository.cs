@@ -7,7 +7,6 @@ namespace WineCellar.API.Repositories
     public interface IVendorRepository
     {
         Task<Vendor> CreateVendorAsync(Vendor vendor);
-        Task DeleteVendorAsync(Vendor vendorIn);
         Task DeleteVendorAsync(string id);
         Task<IEnumerable<Vendor>> GetVendorsAsync();
         Task<Vendor> GetVendorAsync(string id);

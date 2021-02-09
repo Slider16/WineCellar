@@ -66,8 +66,7 @@ namespace WineCellar.API.Repositories
                                    Id = w.Id,
                                    Name = w.Name,
                                    SellPrice = w.SellPrice,
-                                   Vineyard = w.Vineyard,
-                                   WinePurchases = w.WinePurchases
+                                   Vineyard = w.Vineyard,                                   
                                })
                                .ToListAsync();            
         }
@@ -86,9 +85,6 @@ namespace WineCellar.API.Repositories
         public async Task UpdateWineAsync(string id, Wine wineIn) =>
             await _wines.ReplaceOneAsync(wine => wine.Id == id, wineIn).ConfigureAwait(false);
 
-        public async Task DeleteWineAsync(Wine wineIn) =>        
-            await _wines.DeleteOneAsync(wine => wine.Id == wineIn.Id).ConfigureAwait(false);
-
         public async Task DeleteWineAsync(string id) =>
             await _wines.DeleteOneAsync(wine => wine.Id == id).ConfigureAwait(false);
 
@@ -102,7 +98,5 @@ namespace WineCellar.API.Repositories
             var task = await _wines.FindAsync(wine => wine.Id == wineId).ConfigureAwait(false);
             return (await task.FirstOrDefaultAsync().ConfigureAwait(false) != null);
         }
-
-
     }
 }

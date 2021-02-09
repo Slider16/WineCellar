@@ -10,7 +10,12 @@ namespace WineCellar.API.Entities
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("wineId")]
+        public string WineId { get; set; }
+
+        [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("vendorId")]
         public string VendorId { get; set; }
 
@@ -20,7 +25,10 @@ namespace WineCellar.API.Entities
         [BsonElement("purchasePrice")]
         public decimal PurchasePrice { get; set; }
 
-        // We need this constructor in order to properly generate a mongoDb objectid for this sub-document
+        [BsonElement("researchedPrice")]
+        public decimal ResearchedPrice { get; set; }
+
+        // We need this constructor in order to properly generate a mongoDb objectid
         public WinePurchase()
         {
             Id = ObjectId.GenerateNewId().ToString();

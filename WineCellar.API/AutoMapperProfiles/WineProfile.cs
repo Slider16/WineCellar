@@ -10,10 +10,10 @@ namespace WineCellar.API.AutoMapperProfiles
     {
         public WineProfile()
         {
-            CreateMap<Entities.Wine, Models.WineDto>()
-                .ForMember(
-                    dest => dest.WinePurchases,
-                    opt => opt.MapFrom(src => src.WinePurchases));
+            CreateMap<Entities.Wine, Models.WineDto>();
+                //.ForMember(
+                //    dest => dest.WinePurchases,
+                //    opt => opt.MapFrom(src => src.WinePurchases));
 
             CreateMap<Models.WineForCreationDto, Entities.Wine> ();
 

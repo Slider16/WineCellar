@@ -24,9 +24,6 @@ namespace WineCellar.API.Repositories
             return vendor;
         }
 
-        public async Task DeleteVendorAsync(Vendor vendorIn) =>
-            await _vendors.DeleteOneAsync(vendor => vendor.Id == vendorIn.Id).ConfigureAwait(false);
-
         public async Task DeleteVendorAsync(string id) =>
             await _vendors.DeleteOneAsync(vendor => vendor.Id == id).ConfigureAwait(false);
 

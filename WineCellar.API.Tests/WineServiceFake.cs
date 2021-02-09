@@ -31,11 +31,11 @@ namespace WineCellar.API.Tests
             
             _wineList = new List<Wine>()
             {
-                new Wine() { Id = "1234", Name = "Jose Cabernet", Vineyard = "Grapes Galore Vineyard", Location = "Spain", Notes = "This is an excellent wine for shrimp and meats.", Year = 1995 },
-                new Wine() { Id = "4567", Name = "Perfect Pinot", Vineyard = "Italianio Gardens", Location = "Italy", Notes = "Great with steaks and with steamed vegetables.", Year = 2001 },
-                new Wine() { Id = "0910", Name = "Mind Blowing Merlot", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Year = 2008 },
-                new Wine() { Id = "1112", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.", Year = 2011 },
-                new Wine() { Id = "1314", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017, WinePurchases = shiningShirazPurchases } 
+                new Wine() { Id = "1234", Name = "Jose Cabernet", Notes = "This is an excellent wine for shrimp and meats.", Year = 1995 },
+                new Wine() { Id = "4567", Name = "Perfect Pinot", Notes = "Great with steaks and with steamed vegetables.", Year = 2001 },
+                new Wine() { Id = "0910", Name = "Mind Blowing Merlot", Notes = "Just goes great with everything.", Year = 2008 },
+                new Wine() { Id = "1112", Name = "Marvelous Malbec", Notes = "A wine for a quiet evening.", Year = 2011 },
+                new Wine() { Id = "1314", Name = "Shining Shiraz", Notes = "This will get the party going.", Year = 2017} 
             };
         }
 
@@ -48,11 +48,6 @@ namespace WineCellar.API.Tests
         {
             wine.Id = "5e097a48de9973754407f7b2";
             return await Task.FromResult(wine);
-        }
-
-        public async Task DeleteWineAsync(Wine wineIn)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task DeleteWineAsync(string id)

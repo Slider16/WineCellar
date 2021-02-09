@@ -16,6 +16,8 @@ namespace WineCellar.API.AutoMapperProfiles
             CreateMap<Entities.WinePurchase, Models.WinePurchaseDto>();
 
             CreateMap<Models.WinePurchaseForCreationDto, Entities.WinePurchase>();
+
+            CreateMap<Models.WinePurchaseForUpdateDto, Entities.WinePurchase>();
         }
     }
 }

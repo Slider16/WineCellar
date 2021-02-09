@@ -11,13 +11,14 @@ namespace WineCellar.API.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Vineyard { get; set; }
+        public string VineyardId { get; set; }
         public string Location { get; set; }
         public int Year { get; set; }
         public int Bin { get; set; }
         public string Notes { get; set; }
         public List<LinkDto> Links { get; set; } 
             = new List<LinkDto>();
-        public List<WinePurchaseDto> WinePurchases { get; set; } 
+        public List<WinePurchaseDto> WinePurchases { get; set; }
             = new List<WinePurchaseDto>();
     }
 }

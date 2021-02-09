@@ -18,27 +18,32 @@ namespace WineCellar.API.Controllers
     /// The MVC based controller for Wines without view support
     /// </summary>
     [Produces("application/json", "application/xml")]
-    [Route("api/wines")]
+    [Route("api/[controller]")]
     [ApiController]
     public class WineController : ControllerBase
     {
         private readonly ILogger<WineController> _logger;
         private readonly IWineRepository _service;
+        private readonly IWinePurchaseRepository _winePurchaseService;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// The main WineController constructor with parameters necessary for dependency injection
         /// </summary>
         /// <param name="logger">The ILogger type of VendorController for dependency injection</param>
-        /// <param name="service">The IVendorService for dependency injection</param>
+        /// <param name="service">The IWineRepository for dependency injection</param>
+        /// <param name="winePurchaseService">The IWinePurchaseRepository for dependency injection</param>
         /// <param name="mapper">Dependency injection for AutoMapper</param>
-        public WineController(ILogger<WineController> logger, IWineRepository service, IMapper mapper)
+        public WineController(ILogger<WineController> logger, IWineRepository service, IWinePurchaseRepository winePurchaseService, IMapper mapper)
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
 
             _service = service ??
                 throw new ArgumentNullException(nameof(service));
+
+            _winePurchaseService = winePurchaseService ??
+                throw new ArgumentNullException(nameof(winePurchaseService));
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
@@ -118,7 +123,7 @@ namespace WineCellar.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WineDto>> GetWineAsync(string id)
         {
-            _logger.LogDebug("Getting wine from serivce.");
+            _logger.LogDebug("Getting wine from service.");
 
             var wineFromService = await _service.GetWineAsync(id).ConfigureAwait(false);
             if (wineFromService == null)
@@ -130,6 +135,14 @@ namespace WineCellar.API.Controllers
 
             var wineDto = _mapper.Map<WineDto>(wineFromService);
 
+            _logger.LogDebug($"Checking for existing wine purchases for wine: {wineDto.Id}");
+            var winePurchasesFromService = await _winePurchaseService.GetWinePurchasesByWineIdAsync(wineFromService.Id);
+            if (winePurchasesFromService.Count() > 0)
+            {
+                var winePurchasesDto = _mapper.Map<IEnumerable<WinePurchaseDto>>(winePurchasesFromService).ToList();
+                wineDto.WinePurchases = winePurchasesDto;
+            }
+           
             // Add a "links collection" to the wineDto object returned.
             wineDto.Links = CreateLinksForWine(wineDto);
 
@@ -187,8 +200,7 @@ namespace WineCellar.API.Controllers
             var wineEntityToUpdate = await _service.GetWineAsync(id).ConfigureAwait(false);
 
             if (wineEntityToUpdate == null)
-            {
-                // Do an UPSERT
+            {             
                 var wineToAdd = _mapper.Map<Wine>(wineForUpdateDto);
 
                 // This is what makes this PUT idempotent
@@ -200,7 +212,7 @@ namespace WineCellar.API.Controllers
 
                 return CreatedAtRoute(nameof(GetWineAsync), new { wineDtoToReturn.Id }, wineDtoToReturn);                
             }
-
+        
             // Map the changes from our wineForUpdateDto to the entity wineToUpdate
             _mapper.Map(wineForUpdateDto, wineEntityToUpdate);
 
@@ -211,22 +223,25 @@ namespace WineCellar.API.Controllers
         }
 
         /// <summary>
-        /// Delete a Wine by id
+        /// Delete a Wine by id, along with any associated wine purchases
         /// </summary>
-        /// <param name="id">The id of the Wine to delete</param>
+        /// <param name="wineId">The id of the Wine to delete</param>
         /// <returns>An ActionResult of type NoContent</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteWineAsync(string id)
+        public async Task<ActionResult> DeleteWineAsync(string wineId)
         {
-            var wineFromService = await _service.GetWineAsync(id).ConfigureAwait(false);
+            var wineFromService = await _service.GetWineAsync(wineId).ConfigureAwait(false);
             if (wineFromService == null)
             {
                 return NotFound();
             }
 
-            await _service.DeleteWineAsync(id).ConfigureAwait(false);
+            // Delete any associated wine purchases
+            await _winePurchaseService.DeleteWinePurchasesByWineIdAsync(wineId).ConfigureAwait(false);
+
+            await _service.DeleteWineAsync(wineId).ConfigureAwait(false);
 
             return NoContent();
         }

@@ -61,6 +61,7 @@ namespace WineCellar.API
             services.AddSingleton<IWineRepository, WineRepositoryMongoDB>();
             services.AddSingleton<IVendorRepository, VendorRepositoryMongoDB>();
             services.AddSingleton<IWinePurchaseRepository, WinePurchaseRepositoryMongoDB>();
+            services.AddSingleton<IVineyardRepository, VineyardRepositoryMongoDB>();
 
             //services.AddTransient<IWineService, MockWineService>();
 
@@ -74,7 +75,7 @@ namespace WineCellar.API
                 setupAction.SwaggerDoc("WineCellarOpenAPISpecification", new Microsoft.OpenApi.Models.OpenApiInfo()
                 {
                     Title = "WineCellar.Net.API",
-                    Version = "1",
+                    Version = "1.0",
                     Description = "A simple wine tracking API based app with some external data sources",
                     Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                     {
@@ -119,7 +120,7 @@ namespace WineCellar.API
             app.UseSwaggerUI(setupAction =>
             {
                 setupAction.SwaggerEndpoint("/swagger/WineCellarOpenAPISpecification/swagger.json",
-                    "Wine Cellar API");
+                    "Wine Cellar API v1");
 
                 setupAction.RoutePrefix = "";
                 

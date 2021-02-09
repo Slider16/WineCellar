@@ -12,13 +12,17 @@ namespace WineCellar.API.Entities
 
         [BsonElement("name")]
         public string Name { get; set; }
-        
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonElement("vineyardid")]
+        public string VineyardId { get; set; }
+
         [BsonElement("vineyard")]
         public string Vineyard { get; set; }
-        
+
         [BsonElement("location")]
         public string Location { get; set; }
-        
+
         [BsonElement("year")]
         public int Year { get; set; }
 
@@ -33,16 +37,5 @@ namespace WineCellar.API.Entities
 
         [BsonElement("__v")]
         public int __v { get; set; }
-
-        [BsonElement("purchases")]
-        public List<WinePurchase> WinePurchases { get; set; }
-        
-
-        public Wine()
-        {
-            WinePurchases = new List<WinePurchase>();
-        }
-
-
     }
 }

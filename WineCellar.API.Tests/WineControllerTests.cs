@@ -37,6 +37,7 @@ namespace WineCellar.API.Tests
         {
             // Arrange
             IWineRepository wineService = GetWineServiceStub();
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
             var response = Substitute.For<HttpResponse>();
             var httpContext = Substitute.For<HttpContext>();
             httpContext.Items.Add("response", response);
@@ -44,7 +45,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);            
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);            
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -61,13 +62,14 @@ namespace WineCellar.API.Tests
             // Arrange
             var wineList = new List<Wine>()
             {
-                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Year = 2008 },
-                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.", Year = 2011 },
-                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Notes = "Just goes great with everything.", Year = 2008 },
+                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Notes = "A wine for a quiet evening.", Year = 2011 },
+                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Notes = "This will get the party going.", Year = 2017 }
             };
 
             IWineRepository wineService = GetWineServiceStub(wineList);
-            
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
+
 
             var response = Substitute.For<HttpResponse>();
             var httpContext = Substitute.For<HttpContext>();
@@ -76,7 +78,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -96,12 +98,13 @@ namespace WineCellar.API.Tests
             // Arrange
             var wineList = new List<Wine>()
             {
-                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Vineyard = "Hills of Southern California Vineyards", Bin = 40, Location = "California", Notes = "Just goes great with everything.", Year = 2008 },
-                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.", Year = 2011 },
-                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Bin = 40, Notes = "Just goes great with everything.", Year = 2008 },
+                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Notes = "A wine for a quiet evening.", Year = 2011 },
+                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Notes = "This will get the party going.", Year = 2017 }
             };
 
             IWineRepository wineService = GetWineServiceStub(wineList);
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
 
             var response = Substitute.For<HttpResponse>();
             var httpContext = Substitute.For<HttpContext>();
@@ -110,7 +113,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -130,12 +133,13 @@ namespace WineCellar.API.Tests
             // Arrange
             var wineList = new List<Wine>()
             {
-                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Good Year Wine", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Year = 2011 },
-                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.", Year = 2011 },
-                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Good Year Wine", Notes = "Just goes great with everything.", Year = 2011 },
+                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Notes = "A wine for a quiet evening.", Year = 2011 },
+                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Notes = "This will get the party going.", Year = 2017 }
             };
 
             IWineRepository wineService = GetWineServiceStub(wineList);
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
 
             var response = Substitute.For<HttpResponse>();
             var httpContext = Substitute.For<HttpContext>();
@@ -144,7 +148,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -165,12 +169,13 @@ namespace WineCellar.API.Tests
             // Arrange
             var wineList = new List<Wine>()
             {
-                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Good Year Wine", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Bin = 40, Year = 2011 },
-                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.",  Year = 2011 },
-                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Good Year Wine", Notes = "Just goes great with everything.", Bin = 40, Year = 2011 },
+                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Notes = "A wine for a quiet evening.",  Year = 2011 },
+                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Notes = "This will get the party going.", Year = 2017 }
             };
 
             IWineRepository wineService = GetWineServiceStub(wineList);
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
 
             var response = Substitute.For<HttpResponse>();
             var httpContext = Substitute.For<HttpContext>();
@@ -179,7 +184,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -200,12 +205,13 @@ namespace WineCellar.API.Tests
             // Arrange
             var wineList = new List<Wine>()
             {
-                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Vineyard = "Hills of Southern California Vineyards", Location = "California", Notes = "Just goes great with everything.", Year = 2008 },
-                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "A wine for a quiet evening.", Year = 2011 },
-                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Vineyard = "Aussie Audacity Vineyards", Location = "Australia", Notes = "This will get the party going.", Year = 2017 }
+                new Wine() { Id = "5da3ab6639977d41082450c2", Name = "Mind Blowing Merlot", Notes = "Just goes great with everything.", Year = 2008 },
+                new Wine() { Id = "5da3ad0ef351f857309400ff", Name = "Marvelous Malbec", Notes = "A wine for a quiet evening.", Year = 2011 },
+                new Wine() { Id = "5da3b1d4f351f85730940101", Name = "Shining Shiraz", Notes = "This will get the party going.", Year = 2017 }
             };
 
             IWineRepository wineService = GetWineServiceStub(wineList);
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
 
             var response = Substitute.For<HttpResponse>();
             var httpContext = Substitute.For<HttpContext>();
@@ -214,7 +220,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -234,6 +240,7 @@ namespace WineCellar.API.Tests
         {
             // Arrange
             IWineRepository wineService = GetWineServiceStub();
+            IWinePurchaseRepository winePurchaseService = GetWinePurchaseServiceStub();
 
             var response = Substitute.For<HttpResponse>();
             
@@ -243,7 +250,7 @@ namespace WineCellar.API.Tests
             var factory = new LoggerFactory();
             var logger = factory.CreateLogger<WineController>();
 
-            _controller = new WineController(logger, wineService, _mapper);
+            _controller = new WineController(logger, wineService, winePurchaseService, _mapper);
             _controller.ControllerContext.HttpContext = httpContext;
             _controller.Url = Substitute.For<IUrlHelper>();
 
@@ -259,6 +266,12 @@ namespace WineCellar.API.Tests
             var result = Assert.IsType<CreatedAtRouteResult>(actionResult.Result);
             var wineDtoReturnedToClient = Assert.IsType<WineDto>(result.Value);
             Assert.Equal("Red Wine", wineDtoReturnedToClient.Name);
+        }
+
+
+        private IWinePurchaseRepository GetWinePurchaseServiceStub(List<WinePurchase> winePurchaseList = null)
+        {
+            return winePurchaseList != null ? new WinePurchaseServiceFake(winePurchaseList) : new WinePurchaseServiceFake();
         }
 
         private IWineRepository GetWineServiceStub(List<Wine> wineList = null)
