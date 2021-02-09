@@ -1,0 +1,75 @@
+﻿@page "/vineyardedit"
+@page "/vineyardedit/{VineyardId}"
+
+@using WineCellar.Blazor.Shared
+@using WineCellar.Blazor.UI.Services
+
+<TopNavBar />
+
+<div class="entity-edit">
+    @if (!Saved)
+    {
+        <h2>Details for @Vineyard.Name</h2>
+        <EditForm Model="@Vineyard" OnValidSubmit="@HandleValidSubmit">
+            <ObjectGraphDataAnnotationsValidator />
+
+            <div class="form-group row">
+                <label for="name" class="col-sm-3">Name: </label>
+                <InputText id="name" class="form-control col-sm-8" @bind-Value="@Vineyard.Name"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Name)" />
+            </div>
+            <div class="form-group row">
+                <label for="address" class="col-sm-3">Address: </label>
+                <InputText id="address" class="form-control col-sm-8" @bind-Value="@Vineyard.Address.Street"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Address.Street)" />
+            </div>
+            <div class="form-group row">
+                <label for="city" class="col-sm-3">City: </label>
+                <InputText id="city" class="form-control col-sm-8" @bind-Value="@Vineyard.Address.City"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Address.City)" />
+            </div>
+            <div class="form-group row">
+                <label for="state" class="col-sm-3">State: </label>
+                <InputText id="state" class="form-control col-sm-8" @bind-Value="@Vineyard.Address.State"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Address.State)" />
+            </div>
+            <div class="form-group row">
+                <label for="zipcode" class="col-sm-3">Zip Code: </label>
+                <InputText id="zipcode" class="form-control col-sm-8" @bind-Value="@Vineyard.Address.ZipCode"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Address.ZipCode)" />
+            </div>
+            <div class="form-group row">
+                <label for="country" class="col-sm-3">Country: </label>
+                <InputText id="country" class="form-control col-sm-8" @bind-Value="@Vineyard.Address.Country"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Address.Country)" />
+            </div>
+                    @*<div class="form-group row">
+                    <label for="website" class="col-sm-3">Longitude: </label>
+                    <InputText id="website" class="form-control col-sm-8" @bind-Value="@Vineyard.Longitude.ToString()"></InputText>
+                    <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Longitude)" />
+                </div>
+                <div class="form-group row">
+                    <label for="website" class="col-sm-3">Latitude: </label>
+                    <InputText id="website" class="form-control col-sm-8" @bind-Value="@Vineyard.Latitude.ToString()"></InputText>
+                    <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Vineyard.Latitude)" />
+                </div>*@
+            <div class="form-group row col-sm-3">
+                <button type="submit" class="btn btn-primary m-1">Save</button>
+                @if (!string.IsNullOrEmpty(Vineyard.Id))
+                {
+                    <button type="button" class="btn btn-danger m-1" @onclick="Delete_Click">Delete</button>
+                }
+            </div>
+            <Confirm ConfirmationChanged="ConfirmDelete_Click"
+                     @ref="DeleteConfirmation"
+                     ConfirmationTitle="Delete Vineyard?"
+                     ConfirmationMessage=@($"Are you sure you want to delete vineyard \"{Vineyard.Name}\"?")>
+            </Confirm>
+        </EditForm>
+    }
+    else
+    {
+        <div class="alert @StatusClass">@Message</div>
+        <a class="btn btn-outline-primary" @onclick="@NavigateToVineyardList">Back to vineyard list</a>
+    }
+</div>
