@@ -1,49 +1,62 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WineCellar.Blazor.Shared.Models;
+using WineCellar.Blazor.UI.Components;
 using WineCellar.Blazor.UI.Services;
 
 namespace WineCellar.Blazor.UI.Pages
 {
     public partial class WineEdit : ComponentBase
     {
-
         public Wine Wine { get; set; }
-        
+
         [Parameter]
         public string WineId { get; set; }
-        protected string Message { get; set; }
-        protected string Year { get; set; } = string.Empty;
+        
+        protected string Message { get; set; }       
         
         protected bool Saved;
         
         protected string StatusClass = string.Empty;
-        
 
+        protected ConfirmBase DeleteConfirmation { get; set; }
+
+        protected WinePurchaseComponent WinePurchaseComponent { get; set; }
+        
+        protected string winePurchaseIdToDelete { get; set; }    
+        
         [Inject]
         public IWineDataService WineDataService { get; set; }
 
         [Inject]
+        public IWinePurchaseDataService WinePurchaseDataService { get; set; }
+
+        [Inject]
+        public IVineyardDataService VineyardDataService { get; set; }
+
+        [Inject]
         private NavigationManager NavigationManager { get; set; }
 
+        public List<Vineyard> Vineyards { get; set; } = new List<Vineyard>();
 
         protected override async Task OnInitializedAsync()
         {           
             Wine = new Wine();
             
+            Vineyards = (await VineyardDataService.GetVineyardsAsync()).ToList();
+
             if (!string.IsNullOrEmpty(WineId))
             {
                 Wine = await WineDataService.GetWineByIdAsync(WineId).ConfigureAwait(false);
-
-                if (Wine != null)
-                {
-                    Year = Wine.Year.ToString();
-                }
             }
         }
-        protected async Task HandleValidSubmit()
+        
+        protected async Task HandleValidSubmitAsync()
         {
-
             if (!string.IsNullOrEmpty(WineId))
             {
                 await WineDataService.UpdateWineAsync(Wine).ConfigureAwait(false);
@@ -63,25 +76,50 @@ namespace WineCellar.Blazor.UI.Pages
                 else
                 {
                     StatusClass = "alert-danger";
-                    Message = "An error has occured";
+                    Message = "An error has occurred";
                     Saved = false;
                 }
             }
         }
 
-        public async Task DeleteWine()
+        protected async Task WinePurchaseAdded()
         {
-            await WineDataService.DeleteWine(WineId).ConfigureAwait(false);
+            Wine = await WineDataService.GetWineByIdAsync(WineId).ConfigureAwait(false);            
+        }
 
-            StatusClass = "alert-success";
-            Message = "Wine deleted successfully.";
+        protected async Task WinePurchaseEdited()
+        {
+            Wine = await WineDataService.GetWineByIdAsync(WineId).ConfigureAwait(false);
+        }
 
-            Saved = true;
+
+        protected void QuickAddWinePurchase()
+        {
+            WinePurchaseComponent.Show();
+        }
+
+
+        protected async Task WinePurchaseDeleted()
+        {
+            Wine = await WineDataService.GetWineByIdAsync(WineId).ConfigureAwait(false);
+        }
+
+        protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+        {
+            if (deleteConfirmed) 
+            {
+               
+                await WineDataService.DeleteWineAsync(WineId).ConfigureAwait(false);
+
+                StatusClass = "alert-success";
+                Message = "Wine deleted successfully.";
+                Saved = true;
+            }           
         }
 
         protected void NavigateToWineList()
         {
-            NavigationManager.NavigateTo("/winelist");
+            NavigationManager.NavigateTo("/wine");            
         }
     }
 }

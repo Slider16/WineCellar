@@ -21,6 +21,16 @@ namespace WineCellar.Blazor.UI.Pages
 
         public IEnumerable<Wine> Wines { get; set; }
 
+        public bool ShowCards { get; set; }
+        
+        protected string Message { get; set; }
+
+        protected bool Saved;
+        
+        protected string StatusClass = string.Empty;
+
+        public bool ShowFooter { get; set; } = true;
+
         [Inject]
         public IWineDataService WineDataService { get; set; }
 
@@ -31,16 +41,20 @@ namespace WineCellar.Blazor.UI.Pages
         [Parameter]
         public int Count { get; set; }
 
+        public EventCallback<bool> OnShowCardsSelection { get; set; }
+
+        public EventCallback<bool> OnWineListChange { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                Wines = (await WineDataService.GetAllWinesAsync()).ToList();
+                Wines = (await WineDataService.GetWinesAsync()).ToList();
             }
             catch (Exception e)
             {
-                Logger.LogDebug(e, e.Message);                
+                Logger.LogDebug(e, e.Message);
+                throw;
             }
 
 
@@ -48,6 +62,21 @@ namespace WineCellar.Blazor.UI.Pages
             {
                 Wines = Wines.Take(Count).ToList();
             }            
+        }
+
+        protected void NavigateToWineList()
+        {
+            NavigationManager.NavigateTo("/wine");
+        }
+
+        protected async Task ShowCardsChanged(ChangeEventArgs e)
+        {            
+            await OnShowCardsSelection.InvokeAsync((bool)e.Value);
+        }
+
+        protected async Task WineListChanged(ChangeEventArgs e)
+        {
+            await OnWineListChange.InvokeAsync((bool)e.Value);
         }
     }
 }

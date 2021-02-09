@@ -18,17 +18,17 @@ namespace WineCellar.Blazor.UI.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Vendor>> GetAllVendorsAsync()
+        public async Task<IEnumerable<Vendor>> GetVendorsAsync()
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<Vendor>>
-                (await _httpClient.GetStreamAsync($"api/vendors"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/vendor"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
         
         public async Task<Vendor> AddVendorAsync(Vendor vendor)
         {
             var vendorJson = new StringContent(JsonSerializer.Serialize(vendor), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/vendors", vendorJson).ConfigureAwait(false);
+            var response = await _httpClient.PostAsync("api/vendor", vendorJson).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {
@@ -40,7 +40,7 @@ namespace WineCellar.Blazor.UI.Services
         
         public async Task<Vendor> GetVendorByIdAsync(string vendorId)
         {
-            var response = await _httpClient.GetAsync($"api/vendors/{vendorId}").ConfigureAwait(false);
+            var response = await _httpClient.GetAsync($"api/vendor/{vendorId}").ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {
@@ -52,7 +52,7 @@ namespace WineCellar.Blazor.UI.Services
 
         public async Task DeleteVendor(string vendorId)
         {
-            var response = await _httpClient.DeleteAsync($"api/vendors/{vendorId}").ConfigureAwait(false);
+            var response = await _httpClient.DeleteAsync($"api/vendor/{vendorId}").ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Error deleting vendor with id: {vendorId}.");
@@ -62,7 +62,7 @@ namespace WineCellar.Blazor.UI.Services
         {
             var vendorJson = new StringContent(JsonSerializer.Serialize(vendor), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/vendors/{vendor.Id}", vendorJson).ConfigureAwait(false);
+            var response = await _httpClient.PutAsync($"api/vendor/{vendor.Id}", vendorJson).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Error updating wine with id: {vendor.Id}");

@@ -1,12 +1,13 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-.entity-edit {
-    padding: 15px;
-    background-color: rgba(144, 168, 186, 0.90);
-}
-
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #545758;
+    
+}
+
+.body {
+    background-color: #21b0c4;
 }
 
 a, .btn-link {
@@ -52,10 +53,11 @@ app {
 }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
+    background-image: linear-gradient( 180deg, rgb(77 109 84) 0%, #865d79 70%);
 }
 
-    .sidebar .top-row {
+    .sidebar .top-row {        
         background-color: rgba(0,0,0,0.4);
     }
 
@@ -122,6 +124,7 @@ app {
     color: red;
 }
 
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -185,4 +188,79 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+
+
+/*My Additions for ConfirmDialog component*/
+.pop-container {
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(132, 4, 4, 0.77);
+}
+
+.popconfirm {
+    color: white;
+    background-color: gray;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightblue;
+    padding: 10px;
+    border-radius: 15px;
+    min-width: 250px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pop-message-card, .pop-message-card div {
+    background-color: rgba(0, 0, 0, 0.00)
+}
+
+.gradient-to-gray {
+    background: linear-gradient(0deg,#000000,#888);
+    color: #fff;
+}
+
+.btn-yes {
+    background-color: darkgreen;
+    color: limegreen;
+    width: 100%;
+}
+
+.btn-no {
+    background-color: darkred;
+    color: lightcoral;
+    width: 100%;
+}
+
+.table {
+    background-color: #bb9696
+}
+
+.table-btn {
+    background-color: #23cfa7;
+    border-color: #23cfa7;
+    border-radius: 50%;
+}
+
+    .table-btn:hover, .table-btn:active {
+        color: #fff;
+        background-color: #a593c2 !important;
+        border-color: #a593c2 !important;
+    }
+
+.jumbotron {
+    box-shadow: inset 0 0 0 100vw rgba(0, 0, 0, 0.1);
+    height: 40vh;
+    background-size: cover;
+}
+
+.jumbotron-home-wine-bottles {
+    background: url("/images/old-world-map.png") no-repeat;
 }

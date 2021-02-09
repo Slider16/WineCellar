@@ -1,0 +1,1566 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "WineCellar.Net.API",
+    "description": "A simple wine tracking API based app with some external data sources",
+    "termsOfService": "https://www.slidersAPIs/termsofservice",
+    "contact": {
+      "name": "Elgin Rogers",
+      "url": "https://www.twitter.com/Slider16",
+      "email": "elginr16@gmail.com"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Vendor": {
+      "get": {
+        "tags": [
+          "Vendor"
+        ],
+        "summary": "Get a paged list, size a page count based on query string, of all vendors in the database",
+        "operationId": "GetVendorsAsync",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VendorDto"
+                  },
+                  "nullable": true
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VendorDto"
+                  },
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vendor"
+        ],
+        "summary": "Create a new Vendor",
+        "requestBody": {
+          "description": "A data transfer object representation of the Vendor to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VendorForCreationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Vendor/{id}": {
+      "get": {
+        "tags": [
+          "Vendor"
+        ],
+        "summary": "Get a vendor by id",
+        "operationId": "GetVendorAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Vendor to get",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vendor"
+        ],
+        "summary": "Update a Vendor.  Creates a new Vendor entity if vendor not found",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Vendor to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A data transfer object representation of the Vendor to update or create if not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VendorForUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vendor"
+        ],
+        "summary": "Deletes a vendor by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Vendor to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Vineyard": {
+      "get": {
+        "tags": [
+          "Vineyard"
+        ],
+        "summary": "Get a paged list of all vineyards in the database.  List size and page count based on query string",
+        "operationId": "GetVineyardsAsync",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VineyardDto"
+                  },
+                  "nullable": true
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VineyardDto"
+                  },
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Vineyard"
+        ],
+        "summary": "Create a new Vineyard",
+        "requestBody": {
+          "description": "A data transfer object representation of the Vineyard to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VineyardForCreationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VineyardDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VineyardDto"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Vineyard/{id}": {
+      "get": {
+        "tags": [
+          "Vineyard"
+        ],
+        "summary": "Get a vineyard by id",
+        "operationId": "GetVineyardAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Vineyard to get",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VineyardDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/VineyardDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Vineyard"
+        ],
+        "summary": "Update a Vineyard.  Creates a new Vineyard entity if vineyard not found",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Vineyard to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A data transfer object representation of the Vineyard to update or create if not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VineyardForUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Vineyard"
+        ],
+        "summary": "Delete a Vineyard by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Vineyard to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Wine": {
+      "get": {
+        "tags": [
+          "Wine"
+        ],
+        "summary": "Get a paged list of all wines in the database.  Can use either of the optional parameters Year, or Vineyard starts with vineyard text. List size and page count based on query string",
+        "operationId": "GetWinesAsync",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "bin",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "vineyard",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WineDto"
+                  },
+                  "nullable": true
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WineDto"
+                  },
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Wine"
+        ],
+        "summary": "Create a new wine",
+        "requestBody": {
+          "description": "A data transfer object representation of the Wine to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WineForCreationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WineDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/WineDto"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Wine/priceadjust": {
+      "get": {
+        "tags": [
+          "Wine"
+        ],
+        "summary": "Get a paged list of all wines in database using a Price Adjust view model",
+        "operationId": "GetWinesForPriceAdjustAsync",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WinePriceAdjustDto"
+                  },
+                  "nullable": true
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WinePriceAdjustDto"
+                  },
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Wine/{id}": {
+      "get": {
+        "tags": [
+          "Wine"
+        ],
+        "summary": "Get a wine by id",
+        "operationId": "GetWineAsync",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Wine to get",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WineDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/WineDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Wine"
+        ],
+        "summary": "Update a Wine.  Creates a new Wine entity if wine not found",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the Wine to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A data transfer object representation of the Wine to update or create if not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WineForUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Wine"
+        ],
+        "summary": "Delete a Wine by id, along with any associated wine purchases",
+        "parameters": [
+          {
+            "name": "wineId",
+            "in": "query",
+            "description": "The id of the Wine to delete",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/WinePurchase/purchases/{wineId}": {
+      "get": {
+        "tags": [
+          "WinePurchase"
+        ],
+        "summary": "Get a paged list, size a page count based on query string, of all wine purchases for the specified wine",
+        "operationId": "GetWinePurchasesAsync",
+        "parameters": [
+          {
+            "name": "wineId",
+            "in": "path",
+            "description": "The Id of the Wine for which to retrieve purchases",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WinePurchaseDto"
+                  },
+                  "nullable": true
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WinePurchaseDto"
+                  },
+                  "nullable": true
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WinePurchase/{winePurchaseId}": {
+      "get": {
+        "tags": [
+          "WinePurchase"
+        ],
+        "summary": "Get a wine purchase by winepurchaseId",
+        "operationId": "GetWinePurchaseAsync",
+        "parameters": [
+          {
+            "name": "winePurchaseId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WinePurchaseDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/WinePurchaseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "WinePurchase"
+        ],
+        "summary": "Update a wine purchase.  Creates new wine purchase if wine purchase not found",
+        "operationId": "UpdateWinePurchaseAsync",
+        "parameters": [
+          {
+            "name": "winePurchaseId",
+            "in": "path",
+            "description": "The id of WinePurchase to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A data transfer object representation of the WinePurchase to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WinePurchaseForUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success"
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "WinePurchase"
+        ],
+        "summary": "Delete a WinePurchase by id",
+        "parameters": [
+          {
+            "name": "winePurchaseId",
+            "in": "path",
+            "description": "The id of the WinePurchase to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/WinePurchase": {
+      "post": {
+        "tags": [
+          "WinePurchase"
+        ],
+        "summary": "Create a new wine purchase",
+        "parameters": [
+          {
+            "name": "wineId",
+            "in": "query",
+            "description": "The Id of the Wine for which to create a purchase",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A data transfer object respresentation of the WinePurchase to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WinePurchaseForCreationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WinePurchaseDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/WinePurchaseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LinkDto": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "rel": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "method": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "nullable": true
+      },
+      "VendorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "webSite": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "VendorForCreationDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "webSite": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "Object": {
+        "type": "object",
+        "nullable": true
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Object"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": {
+          "$ref": "#/components/schemas/Object"
+        },
+        "nullable": true
+      },
+      "VendorForUpdateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "webSite": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "VineyardDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "VineyardForCreationDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "nullable": true
+      },
+      "VineyardForUpdateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "nullable": true
+      },
+      "WinePurchaseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "vendorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "wineId": {
+            "type": "string",
+            "nullable": true
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "researchedPrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "nullable": true
+      },
+      "WineDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "vineyard": {
+            "type": "string",
+            "nullable": true
+          },
+          "vineyardId": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinkDto"
+            },
+            "nullable": true
+          },
+          "winePurchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WinePurchaseDto"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "WinePurchaseForCreationDto": {
+        "required": [
+          "purchaseDate",
+          "purchasePrice",
+          "vendorId",
+          "wineId"
+        ],
+        "type": "object",
+        "properties": {
+          "vendorId": {
+            "type": "string"
+          },
+          "wineId": {
+            "type": "string"
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "researchedPrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "nullable": true
+      },
+      "WineForCreationDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "vineyard": {
+            "type": "string",
+            "nullable": true
+          },
+          "vineyardId": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notes": {
+            "maxLength": 1500,
+            "type": "string",
+            "nullable": true
+          },
+          "winePurchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WinePurchaseForCreationDto"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "WinePurchase": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "wineId": {
+            "type": "string",
+            "nullable": true
+          },
+          "vendorId": {
+            "type": "string",
+            "nullable": true
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "researchedPrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "nullable": true
+      },
+      "WinePriceAdjustDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "vineyard": {
+            "type": "string",
+            "nullable": true
+          },
+          "sellPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "winePurchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WinePurchase"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "WineForUpdateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "vineyard": {
+            "type": "string",
+            "nullable": true
+          },
+          "vineyardId": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "notes": {
+            "maxLength": 1500,
+            "type": "string",
+            "nullable": true
+          },
+          "winePurchases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WinePurchaseForCreationDto"
+            },
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "WinePurchaseForUpdateDto": {
+        "required": [
+          "purchaseDate",
+          "purchasePrice",
+          "vendorId",
+          "wineId"
+        ],
+        "type": "object",
+        "properties": {
+          "vendorId": {
+            "type": "string"
+          },
+          "wineId": {
+            "type": "string"
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "purchasePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "researchedPrice": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "nullable": true
+      }
+    }
+  }
+}

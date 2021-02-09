@@ -54,12 +54,17 @@
                 <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => WebsiteUrl)" />
             </div>
             <div class="form-group row col-sm-3">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary m-1">Save</button>
                 @if (!string.IsNullOrEmpty(Vendor.Id))
                 {
-                    <a class="btn btn-danger" @onclick="DeleteVendor">Delete</a>
+                    <button type="button" class="btn btn-danger m-1" @onclick="Delete_Click">Delete</button>
                 }
             </div>
+            <Confirm ConfirmationChanged="ConfirmDelete_Click"
+                     @ref="DeleteConfirmation"
+                     ConfirmationTitle="Delete Wine?"
+                     ConfirmationMessage=@($"Are you sure you want to delete vendor \"{Vendor.Name}\"?")>
+            </Confirm>
         </EditForm>
     }
     else

@@ -1,0 +1,19 @@
+﻿<h3>Wine Cards</h3>
+<input type="checkbox" id="showFooter" @bind="ShowFooter"/>
+<label for="showFooter">Show Footer</label>
+
+@if(WineCardWines == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+<div class="container">
+    <div class="card-deck">
+        @foreach (var wine in WineCardWines)
+        {
+            <WineCard Wine="wine" ShowFooter="ShowFooter"></WineCard>
+        }
+    </div>
+</div>
+}

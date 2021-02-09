@@ -6,7 +6,7 @@ namespace WineCellar.Blazor.UI.Services
 {
     public interface IVendorDataService
     {
-        Task<IEnumerable<Vendor>> GetAllVendorsAsync();
+        Task<IEnumerable<Vendor>> GetVendorsAsync();
 
         Task<Vendor> AddVendorAsync(Vendor vendor);
 

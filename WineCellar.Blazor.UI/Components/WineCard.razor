@@ -1,0 +1,21 @@
+﻿<div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+    <div class="card-header">
+        <h5>@Wine.Name</h5>
+    </div>
+    <img class="card-img-top img-thumbnail" src="/images/wine-bottles.png" />
+    @if (ShowFooter)
+    {
+        <div class="card-footer text-center">
+            <a href="#" class="btn btn-primary m-1">View</a>
+
+            <a href="/wineedit/@Wine.Id" class="btn btn-primary m-1">Edit</a>
+
+            <button type="button" class="btn btn-danger m-1" @onclick="Delete_Click">Delete</button>
+        </div>
+    }
+</div>
+<Confirm ConfirmationChanged="ConfirmDelete_Click"
+         @ref="DeleteConfirmation"
+         ConfirmationTitle="Delete Wine?"
+         ConfirmationMessage=@($"Are you sure you want to delete wine \"{Wine.Name}\"?")>
+</Confirm>

@@ -13,13 +13,21 @@ namespace WineCellar.Blazor.Shared.Models
         public string Name { get; set; }
 
         [Required]
-        public string Vineyard { get; set; }
-
-        public string Location { get; set; }
+        public string VineyardId { get; set; }
         
         [Required]                
         public int Year { get; set; }
 
+        public decimal SellPrice { get; set; }
+
+        [Required]
         public string Notes { get; set; }
+
+        public bool ShowPurchases { get; set; }
+
+        public bool ShowWinePurchaseForm { get; set; }
+
+        public List<WinePurchase> WinePurchases { get; set; } =
+            new List<WinePurchase>();
     }
 }

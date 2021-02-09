@@ -1,4 +1,4 @@
-﻿@page "/vendorlist"
+﻿@page "/vendor"
 @using WineCellar.Blazor.Shared.Models
 
 <TopNavBar />
@@ -14,7 +14,6 @@ else
         <table class="table">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Name</th>
                     <th>Address</th>
                     <th>City</th>
@@ -23,13 +22,13 @@ else
                     <th>Country</th>
                     <th>Phone</th>
                     <th>Website</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var vendor in Vendors)
                 {
                 <tr>
-                    <td><a href="/vendoredit/@vendor.Id">@vendor.Id</a></td>
                     <td>@vendor.Name</td>
                     <td>@vendor.Address</td>
                     <td>@vendor.City</td>
@@ -38,6 +37,7 @@ else
                     <td>@vendor.Country</td>
                     <td>@vendor.Phone</td>
                     <td>@vendor.WebSite</td>
+                    <td><a href="/vendoredit/@vendor.Id">Details</a></td>
                 </tr>
                 }
             </tbody>

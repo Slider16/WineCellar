@@ -1,0 +1,39 @@
+﻿@page "/wine/priceadjust"
+@using WineCellar.Blazor.Shared.Models
+
+<TopNavBar />
+
+@if (Wines == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div id="wines" class="widget">
+        <h3>Wines For Price Adjust(@Wines.Count())</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    @*<th>Vineyard</th>*@
+                    <th>Sell Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var wine in Wines)
+                {
+                    <tr>
+                        <td>@wine.Id</td>
+                        <td>@wine.Name</td>
+                        @*<td>@wine.Vineyard</td>*@
+                        <td>@wine.SellPrice</td>
+                        <td><a href="/wineedit/@wine.Id">Details</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+}

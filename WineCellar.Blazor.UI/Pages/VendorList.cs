@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WineCellar.Blazor.Shared.Models;
 using WineCellar.Blazor.UI.Services;
@@ -31,7 +30,7 @@ namespace WineCellar.Blazor.UI.Pages
         {
             try
             {
-                Vendors = (await VendorDataService.GetAllVendorsAsync()).ToList();
+                Vendors = (await VendorDataService.GetVendorsAsync()).ToList();
             }
             catch (Exception e)
             {

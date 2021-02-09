@@ -50,6 +50,18 @@ namespace WineCellar.Blazor.Server
             {
                 client.BaseAddress = new Uri("http://localhost:7777");
             });
+
+            services.AddHttpClient<IVineyardDataService, VineyardDataService>(client => 
+            {
+                client.BaseAddress = new Uri("http://localhost:7777");
+            });
+
+            services.AddHttpClient<IWinePurchaseDataService, WinePurchaseDataService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:7777");
+            });
+
+            services.AddScoped<IModalService, ModalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

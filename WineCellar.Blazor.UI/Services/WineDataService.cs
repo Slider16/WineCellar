@@ -16,17 +16,25 @@ namespace WineCellar.Blazor.UI.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<Wine>> GetAllWinesAsync()
+
+        public async Task<IEnumerable<Wine>> GetWinesAsync()
         {
             return await JsonSerializer.DeserializeAsync<IEnumerable<Wine>>
-                (await _httpClient.GetStreamAsync($"api/wines"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (await _httpClient.GetStreamAsync($"api/wine"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+
+        public async Task<IEnumerable<Wine>> GetWinesForPriceAdjustAsync()
+        {
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Wine>>
+                (await _httpClient.GetStreamAsync($"api/Wine/priceadjust"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        }
+        
 
         public async Task<Wine> AddWineAsync(Wine wine)
         {
             var wineJson = new StringContent(JsonSerializer.Serialize(wine), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/wines", wineJson).ConfigureAwait(false);
+            var response = await _httpClient.PostAsync("api/wine", wineJson).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {
@@ -38,7 +46,7 @@ namespace WineCellar.Blazor.UI.Services
 
         public async Task<Wine> GetWineByIdAsync(string wineId)
         {
-            var response = await _httpClient.GetAsync($"api/wines/{wineId}").ConfigureAwait(false);
+            var response = await _httpClient.GetAsync($"api/wine/{wineId}").ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {
@@ -48,9 +56,9 @@ namespace WineCellar.Blazor.UI.Services
             return null;
         }
 
-        public async Task DeleteWine(string wineId)
+        public async Task DeleteWineAsync(string wineId)
         {
-            var response = await _httpClient.DeleteAsync($"api/wines/{wineId}").ConfigureAwait(false);
+            var response = await _httpClient.DeleteAsync($"api/wine/{wineId}").ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Error deleting wine with id: {wineId}.");
@@ -60,10 +68,15 @@ namespace WineCellar.Blazor.UI.Services
         {
             var wineJson = new StringContent(JsonSerializer.Serialize(wine), Encoding.UTF8, "application/json");
             
-            var response = await _httpClient.PutAsync($"api/wines/{wine.Id}", wineJson).ConfigureAwait(false);
+            var response = await _httpClient.PutAsync($"api/wine/{wine.Id}", wineJson).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception($"Error updating wine with id: {wine.Id}");
+        }
+
+        public Task GetVineyardsAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

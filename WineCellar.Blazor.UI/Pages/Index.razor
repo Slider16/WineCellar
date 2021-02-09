@@ -1,10 +1,50 @@
 ﻿@page "/"
+@inject WineCellar.Blazor.UI.Services.IModalService Modal
+@using WineCellar.Blazor.UI.Components.Modal
+@using WineCellar.Blazor.UI.Services
 
-<h1>World of Wines</h1>
+<div class="top-row">
+    <TopNavBar />
+</div>
+
+<div class="jumbotron jumbotron-home-wine-bottles">
+    @*<div class="container">*@
+        <span class="text-white">Wine Cellar In Blazor</span>
+    @*</div>*@
+</div>
+
+
 
 Best wines anywhere in the world.
+<div>
+    <button @onclick="ShowModal" class="btn btn-primary">Show Modal</button>
+</div>
 
-@*<SurveyPrompt Title="How is Blazor working for you?" />*@
-@*<div>
-    <WineList Count="3" Title="Here's a brief summary of our wine list." />    
-</div>*@
+
+@code{
+    void ShowModal()
+    {
+        //var parameters = new ModalParameters();
+        //parameters.Add("FormId", 3);
+
+        //Modal.OnClose += ModalClosed;
+        //Modal.Show<SignUpForm>("Sign Up Form", parameters);
+
+    }
+
+    void ModalClosed(ModalResult modalResult)
+    {
+        Console.WriteLine("Modal Closed");
+
+        if (modalResult.Cancelled)
+        {
+            Console.WriteLine("Modal Cancelled");
+        }
+        else
+        {
+            Console.WriteLine(modalResult.Data.ToString());
+        }
+
+        Modal.OnClose -= ModalClosed;
+    }
+}

@@ -1,77 +1,69 @@
-﻿@page "/winelist"
+﻿@page "/wine"
 @using WineCellar.Blazor.Shared.Models
 
 <TopNavBar />
 
-@if (Wines == null)
+@if (!Saved)
 {
-    <p><em>Loading...</em></p>
+    @if (Wines == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div id="wines" class="widget">
+            <h3>
+                Wines(@Wines.Count())
+                <span class="float-right">
+                    <input type="checkbox" id="showCards" @bind="ShowCards" />
+                    <label for="showCards">Show Cards</label>
+                    <a href="/wineedit" class="btn btn-primary">Add Wine</a>
+                </span>
+            </h3>
+
+            @if (ShowCards)
+            {
+                <input type="checkbox" id="showFooter" @bind="ShowFooter" />
+                <label for="showFooter">Show Footer</label>
+
+                <div class="container">
+                    <div class="card-deck">
+                        @foreach (var wine in Wines)
+                        {
+                            <WineCard Wine="wine" ShowFooter="ShowFooter" />
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Year</th>
+                            <th>Notes</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var wine in Wines)
+                        {
+                            <WineRow Wine="wine"></WineRow>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    }
 }
 else
 {
-<div id="wines" class="widget">
-    <h3>Wines<a  href="/wineedit" class="btn btn-primary float-right">Add Wine</a></h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Vineyard</th>
-                <th>Location</th>
-                <th>Year</th>
-                <th>Notes</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var wine in Wines)
-            {
-                <tr>
-                    <td><a href="/wineedit/@wine.Id">@wine.Id</a></td>
-                    <td>@wine.Name</td>
-                    <td>@wine.Vineyard</td>
-                    <td>@wine.Location</td>
-                    <td>@wine.Year</td>
-                    <td>@wine.Notes</td>                    
-                </tr>
-            }
-        </tbody>
-    </table>
-
-</div>
-    
-
-    @*<DataGrid TItem="Wine"
-                  Data="@Wines"
-                  PageSize="6"
-                  ShowPager="true"
-                  Hoverable="true"
-                  Striped="true"
-                  Narrow="true"
-                  SelectedRowStyling="@OnSelectedRowStyling">
-            <DataGridColumns>
-                <DataGridCommandColumn TItem="Wine" />
-                <DataGridColumn TItem="Wine" Field="@nameof(Wine.Name)" Caption="Name" Sortable="true" />
-                <DataGridColumn TItem="Wine" Field="@nameof(Wine.Vineyard)" Caption="Vineyard" Sortable="true" />
-                <DataGridColumn TItem="Wine" Field="@nameof(Wine.Location)" Caption="Location" Sortable="false" />
-                <DataGridNumericColumn TItem="Wine" Field="@nameof(Wine.Year)" Caption="Year" Sortable="true" Editable="true">
-                    <DisplayTemplate>
-                        @{
-                            var year = (context as Wine)?.Year;
-                            if (year != null)
-                            {
-                                @($"{year}, Age Of Wine: {DateTime.Now.Year - year}")
-                            }
-                        }
-                    </DisplayTemplate>
-                </DataGridNumericColumn>
-                <DataGridColumn TItem="Wine" Field="@nameof(Wine.Notes)" Caption="Notes" Sortable="false" />
-                <DataGridColumn TItem="Wine" Field="@nameof(Wine.Id)">
-
-                </DataGridColumn>
-            </DataGridColumns>
-        </DataGrid>*@
-
-
+    <div class="alert @StatusClass">@Message</div>
+    <a class="btn btn-outline-primary" @onclick="@NavigateToWineList">Back to wine list</a>
 }
+
+
+
 
 

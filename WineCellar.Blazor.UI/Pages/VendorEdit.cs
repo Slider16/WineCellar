@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Threading.Tasks;
 using WineCellar.Blazor.Shared.Models;
+using WineCellar.Blazor.UI.Components;
 using WineCellar.Blazor.UI.Services;
 namespace WineCellar.Blazor.UI.Pages
 {
@@ -19,8 +19,9 @@ namespace WineCellar.Blazor.UI.Pages
 
         protected string StatusClass = string.Empty;
 
-        protected string WebsiteUrl = string.Empty;
+        protected ConfirmBase DeleteConfirmation { get; set; }
 
+        protected string WebsiteUrl = string.Empty;
 
 
         [Inject]
@@ -74,19 +75,27 @@ namespace WineCellar.Blazor.UI.Pages
             }            
         }
 
-        public async Task DeleteVendor()
+        protected void Delete_Click()
         {
-            await VendorDataService.DeleteVendor(VendorId).ConfigureAwait(false);
+            DeleteConfirmation.Show();
+        }
 
-            StatusClass = "alert-success";
-            Message = "Vendor deleted successfully.";
+        protected async Task ConfirmDelete_Click(bool deleteConfirmed)
+        {
+            if (deleteConfirmed)
+            {
+                await VendorDataService.DeleteVendor(VendorId).ConfigureAwait(false);
 
-            Saved = true;
+                StatusClass = "alert-success";
+                Message = "Vendor deleted successfully.";
+
+                Saved = true;
+            }
         }
 
         protected void NavigateToVendorList()
         {
-            NavigationManager.NavigateTo("/vendorlist");
+            NavigationManager.NavigateTo("/vendor");
         }
 
 

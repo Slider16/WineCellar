@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WineCellar.Blazor.UI;
 using WineCellar.Blazor.UI.Services;
 
 namespace WineCellar.Blazor.Client
@@ -16,7 +17,7 @@ namespace WineCellar.Blazor.Client
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
-            builder.RootComponents.Add<WineCellar.Blazor.UI.App>("app");
+            builder.RootComponents.Add<App>("app");
 
             //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
@@ -29,6 +30,18 @@ namespace WineCellar.Blazor.Client
             {
                 client.BaseAddress = new Uri("http://localhost:7777");
             });
+
+            builder.Services.AddHttpClient<IVineyardDataService, VineyardDataService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:7777");
+            });
+
+            builder.Services.AddHttpClient<IWinePurchaseDataService, WinePurchaseDataService>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:7777");
+            });
+
+            builder.Services.AddScoped<IModalService, ModalService>();
 
             //builder.Services.AddBlazorise(options =>
             //{

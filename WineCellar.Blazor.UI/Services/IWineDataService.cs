@@ -8,7 +8,9 @@ namespace WineCellar.Blazor.UI.Services
 {
     public interface IWineDataService
     {
-        Task<IEnumerable<Wine>> GetAllWinesAsync();
+        Task<IEnumerable<Wine>> GetWinesAsync();
+
+        Task<IEnumerable<Wine>> GetWinesForPriceAdjustAsync();
 
         Task<Wine> AddWineAsync(Wine wine);
 
@@ -16,6 +18,8 @@ namespace WineCellar.Blazor.UI.Services
 
         Task<Wine> GetWineByIdAsync(string wineId);
 
-        Task DeleteWine(string wineId);
+        Task DeleteWineAsync(string wineId);
+
+        Task GetVineyardsAsync();
     }
 }
