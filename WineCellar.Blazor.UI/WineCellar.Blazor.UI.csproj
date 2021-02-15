@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\WineCards.cs" />
     <Compile Remove="Components\WinePurchaseRows.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Components\WineCards.razor" />
     <Content Remove="Components\WinePurchaseRows.razor" />
+    <Content Remove="Pages\WineListPretty.razor" />
   </ItemGroup>
 
   <ItemGroup>

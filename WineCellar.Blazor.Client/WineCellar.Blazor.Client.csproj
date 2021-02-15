@@ -17,7 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj" />
+    <ProjectReference Include="..\WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <Watch Include="..\WineCellar.Blazor.UI\**\*.razor" />
+    <Watch Include="wwwroot\**\*.css" />
   </ItemGroup>
 
 </Project>

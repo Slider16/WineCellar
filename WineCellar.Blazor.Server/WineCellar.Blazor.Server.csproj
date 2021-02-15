@@ -8,4 +8,8 @@
     <ProjectReference Include="..\WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Watch Include="..\WineCellar.Blazor.UI\**\*.razor" />
+  </ItemGroup>
+
 </Project>

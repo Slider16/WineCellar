@@ -2,23 +2,22 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #545758;
-    
+    background-color: #6d79c5a8;
 }
 
-.body {
-    background-color: #21b0c4;
+/*.body {
+    background-color: #a593c2;
 }
-
+*/
 a, .btn-link {
     color: #0366d6;
 }
 
-.btn-primary {
+/*.btn-primary {
     color: #fff;
     background-color: #1b6ec2;
     border-color: #1861ac;
-}
+}*/
 
 app {
     position: relative;
@@ -53,7 +52,7 @@ app {
 }
 
 .sidebar {
-    /*background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);*/
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
     background-image: linear-gradient( 180deg, rgb(77 109 84) 0%, #865d79 70%);
 }
 
@@ -124,6 +123,12 @@ app {
     color: red;
 }
 
+.card-img-top-custom {
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+}
+
 
 #blazor-error-ui {
     background: lightyellow;
@@ -185,14 +190,14 @@ app {
     }
 
     .sidebar .collapse {
-        /* Never collapse the sidebar for wide screens */
+         /*Never collapse the sidebar for wide screens*/ 
         display: block;
     }
 }
 
 
 
-/*My Additions for ConfirmDialog component*/
+My Additions for ConfirmDialog component
 .pop-container {
     z-index: 1000;
     width: 100vw;
@@ -219,7 +224,7 @@ app {
 }
 
 .pop-message-card, .pop-message-card div {
-    background-color: rgba(0, 0, 0, 0.00)
+    background-color: #23cfa7
 }
 
 .gradient-to-gray {
@@ -238,11 +243,11 @@ app {
     color: lightcoral;
     width: 100%;
 }
-
+/*
 .table {
     background-color: #bb9696
 }
-
+*/
 .table-btn {
     background-color: #23cfa7;
     border-color: #23cfa7;
@@ -258,9 +263,10 @@ app {
 .jumbotron {
     box-shadow: inset 0 0 0 100vw rgba(0, 0, 0, 0.1);
     height: 40vh;
-    background-size: cover;
+    background-size: auto 100%;
+    background-position: center center;
 }
 
 .jumbotron-home-wine-bottles {
-    background: url("/images/old-world-map.png") no-repeat;
+    background: url("/images/old-world-map.png") no-repeat center content-box;
 }

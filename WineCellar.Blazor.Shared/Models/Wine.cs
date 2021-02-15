@@ -23,6 +23,8 @@ namespace WineCellar.Blazor.Shared.Models
         [Required]
         public string Notes { get; set; }
 
+        public ImageFile ImageFile { get; set; }
+
         public bool ShowPurchases { get; set; }
 
         public bool ShowWinePurchaseForm { get; set; }

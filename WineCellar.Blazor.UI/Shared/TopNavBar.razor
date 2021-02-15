@@ -1,11 +1,9 @@
 ﻿<!--<div class="alert alert-secondary" role="alert">-->
-    @*<span class="oi oi-pencil mr-2" aria-hidden="true"></span>*@
-    <!--<span class="oi oi-home"></span>
-    <NavLink href="/">Home</NavLink>-->
-    @*<strong>@Title</strong>*@
+@*<span class="oi oi-pencil mr-2" aria-hidden="true"></span>*@
+<!--<span class="oi oi-home"></span>
+<NavLink href="/">Home</NavLink>-->
+@*<strong>@Title</strong>*@
 <!--</div>-->
-
-
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Wine Cellar In Blazor</a>
@@ -14,8 +12,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="wine">Wine List</a>
@@ -34,8 +32,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
+            </li>            
         </ul>
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        @*<a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>*@
     </div>
 </nav>
+
+
