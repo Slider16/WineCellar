@@ -9,6 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.API", "WineCella
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.API.Tests", "WineCellar.API.Tests\WineCellar.API.Tests.csproj", "{E7CB987C-5593-4BE3-BEAC-A6646283D3C5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.UI", "WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj", "{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.Client", "WineCellar.Blazor.Client\WineCellar.Blazor.Client.csproj", "{3AEDEFF3-6454-447E-871C-8546CD581038}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.Shared", "WineCellar.Blazor.Shared\WineCellar.Blazor.Shared.csproj", "{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.Blazor.Server", "WineCellar.Blazor.Server\WineCellar.Blazor.Server.csproj", "{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WineCellar.ConsoleApp", "WineCellar.ConsoleApp\WineCellar.ConsoleApp.csproj", "{607B0DA6-7602-4DEE-BFFC-9BED062E01F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +37,26 @@ Global
 		{E7CB987C-5593-4BE3-BEAC-A6646283D3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7CB987C-5593-4BE3-BEAC-A6646283D3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7CB987C-5593-4BE3-BEAC-A6646283D3C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4F61134-17EB-46D7-9D2E-A06D4E02C0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AEDEFF3-6454-447E-871C-8546CD581038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AEDEFF3-6454-447E-871C-8546CD581038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AEDEFF3-6454-447E-871C-8546CD581038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AEDEFF3-6454-447E-871C-8546CD581038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87E77A67-E406-43E9-8C42-FAC4E64A8D3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B5FBBD-17FA-4AA3-8AF9-FF2A93341139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{607B0DA6-7602-4DEE-BFFC-9BED062E01F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{607B0DA6-7602-4DEE-BFFC-9BED062E01F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{607B0DA6-7602-4DEE-BFFC-9BED062E01F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{607B0DA6-7602-4DEE-BFFC-9BED062E01F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

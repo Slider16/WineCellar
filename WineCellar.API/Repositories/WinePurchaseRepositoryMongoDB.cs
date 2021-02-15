@@ -1,51 +1,51 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
+using WineCellar.API.Entities;
+using WineCellar.API.Interfaces;
 
-namespace WineCellar.Net.API.Repositories
+namespace WineCellar.API.Repositories
 {
     public class WinePurchaseRepositoryMongoDB : IWinePurchaseRepository
     {
-        //private readonly IMongoCollection<Wine> _wines;
+        private readonly IMongoCollection<WinePurchase> _winepurchases;
 
-        //public WinePurchaseServiceMongoDB(IWineCellarDatabaseSettings settings)
-        //{
-        //    var client = new MongoClient(settings.ConnectionString);
-        //    var database = client.GetDatabase(settings.DatabaseName);
-            
-        //    _wines = database.GetCollection<Wine>(settings.WinesCollectionName);
-        //}
-        public Task<WinePurchase> CreateWinePurchaseAsync(WinePurchase winePurchase)
+        public WinePurchaseRepositoryMongoDB(IWineCellarDatabaseSettings settings)
         {
-            //var wineToUpdate = await _wines.FindAsync(wine => wine.Id == wineId).ConfigureAwait(false);
-            //_wines.FindOneAndUpdateAsync(wine => wine.Id == wineId, new Document)
-            throw new NotImplementedException();
+            var client = new MongoClient(settings.ConnectionString);
+            var database = client.GetDatabase(settings.DatabaseName);
+
+            _winepurchases = database.GetCollection<WinePurchase>(settings.WinePurchasesCollectionName);
+        }
+        public async Task<WinePurchase> CreateWinePurchaseAsync(WinePurchase winePurchase)
+        {
+            await _winepurchases.InsertOneAsync(winePurchase).ConfigureAwait(false);
+            return winePurchase;           
+        }
+        public async Task UpdateWinePurchaseAsync(string id, WinePurchase winePurchaseIn) =>
+            await _winepurchases.ReplaceOneAsync(wp => wp.Id == id, winePurchaseIn).ConfigureAwait(false);        
+
+        public async Task DeleteWinePurchaseAsync(string winePurchaseId) =>
+            await _winepurchases.DeleteOneAsync(winepurchase => winepurchase.Id == winePurchaseId).ConfigureAwait(false);
+
+        public async Task DeleteWinePurchasesByWineIdAsync(string wineId) =>
+            await _winepurchases.DeleteManyAsync(winepurchase => winepurchase.WineId == wineId).ConfigureAwait(false);
+        
+
+        public async Task<WinePurchase> GetWinePurchaseAsync(string winePurchaseId)
+        {
+            var task = await _winepurchases.FindAsync(winepurchase => winepurchase.Id == winePurchaseId).ConfigureAwait(false);
+            return await task.FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
-        public Task DeleteWinePurchaseAsync(WinePurchase winePurchaseIn)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task DeleteWinePurchaseAsync(string id)
+        public async Task<IEnumerable<WinePurchase>> GetWinePurchasesByWineIdAsync(string wineId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<WinePurchase> GetWinePurchaseAsync(string wineId, string winePurchaseId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<WinePurchase>> GetWinePurchasesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateWinePurchaseAsync(string id, WinePurchase winePurchaseIn)
-        {
-            throw new NotImplementedException();
+            var filter = Builders<WinePurchase>.Filter.Eq("wineId", ObjectId.Parse(wineId));
+            return (await _winepurchases.FindAsync(filter).ConfigureAwait(false)).ToList();
         }
     }
 }

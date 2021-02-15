@@ -8,11 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
-using WineCellar.Net.API.Interfaces;
+using WineCellar.API.Repositories;
+using WineCellar.API.Models;
+using WineCellar.API.Interfaces;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 
-namespace WineCellar.Net.API
+namespace WineCellar.API
 {
     public class Startup
     {
@@ -26,6 +28,14 @@ namespace WineCellar.Net.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Trying to do loggging to the Console with my MongoEventsLogger in Helpers folder.
+            services.AddLogging(builder =>
+            {
+                builder.AddConfiguration(Configuration.GetSection("Logging"))
+                       .AddConsole()
+                       .AddDebug();
+            });
+
             services.AddControllers(setupAction =>
             {
 
@@ -50,15 +60,22 @@ namespace WineCellar.Net.API
              * singleton service lifetime.*/
             services.AddSingleton<IWineRepository, WineRepositoryMongoDB>();
             services.AddSingleton<IVendorRepository, VendorRepositoryMongoDB>();
+            services.AddSingleton<IWinePurchaseRepository, WinePurchaseRepositoryMongoDB>();
+            services.AddSingleton<IVineyardRepository, VineyardRepositoryMongoDB>();
 
             //services.AddTransient<IWineService, MockWineService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Open", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
 
             services.AddSwaggerGen(setupAction =>
             {
                 setupAction.SwaggerDoc("WineCellarOpenAPISpecification", new Microsoft.OpenApi.Models.OpenApiInfo()
                 {
                     Title = "WineCellar.Net.API",
-                    Version = "1",
+                    Version = "1.0",
                     Description = "A simple wine tracking API based app with some external data sources",
                     Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                     {
@@ -73,6 +90,8 @@ namespace WineCellar.Net.API
                     },
                     TermsOfService = new Uri("https://www.slidersAPIs/termsofservice"),
                 });
+
+                //setupAction.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                 var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlCommentsFileFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
@@ -94,12 +113,14 @@ namespace WineCellar.Net.API
 
             app.UseAuthorization();
 
+            app.UseCors("Open");
+
             app.UseSwagger();
 
             app.UseSwaggerUI(setupAction =>
             {
                 setupAction.SwaggerEndpoint("/swagger/WineCellarOpenAPISpecification/swagger.json",
-                    "Wine Cellar API");
+                    "Wine Cellar API v1");
 
                 setupAction.RoutePrefix = "";
                 

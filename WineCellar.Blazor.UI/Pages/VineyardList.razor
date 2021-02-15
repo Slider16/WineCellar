@@ -1,0 +1,46 @@
+﻿@page "/vineyard"
+
+@using WineCellar.Blazor.Shared.Models
+
+
+@if (Vineyards == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div id="vineyards" class="widget">
+        <h3>Vineyard<a href="/vineyardedit" class="btn btn-primary float-right">Add Vineyard</a></h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Street</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip Code</th>
+                    <th>Country</th>
+                    <th>Longitude</th>
+                    <th>Latitude</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vineyard in Vineyards)
+                {
+                    <tr>
+                        <td>@vineyard.Name</td>
+                        <td>@vineyard.Address.Street</td>
+                        <td>@vineyard.Address.City</td>
+                        <td>@vineyard.Address.State</td>
+                        <td>@vineyard.Address.ZipCode</td>
+                        <td>@vineyard.Address.Country</td>
+                        <td>@vineyard.Longitude</td>
+                        <td>@vineyard.Latitude</td>
+                        <td><a href="/vineyardedit/@vineyard.Id">Details</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

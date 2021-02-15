@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WineCellar.API.Entities;
 
-namespace WineCellar.Net.API.Models
+namespace WineCellar.API.Models
 {
     public class WinePurchaseForManipulationDto
     {
         [Required(ErrorMessage = "Vendor id is required")]
         public string VendorId { get; set; }
+
+        [Required(ErrorMessage = "Wine id is required")]
+        public string WineId { get; set; }
 
         [Required(ErrorMessage = "Purchase date is required")]
         public DateTime PurchaseDate { get; set; }

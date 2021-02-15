@@ -1,10 +1,10 @@
 ﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Interfaces;
+using WineCellar.API.Entities;
+using WineCellar.API.Interfaces;
 
-namespace WineCellar.Net.API.Repositories
+namespace WineCellar.API.Repositories
 {
     public class VendorRepositoryMongoDB : IVendorRepository
     {
@@ -23,9 +23,6 @@ namespace WineCellar.Net.API.Repositories
             await _vendors.InsertOneAsync(vendor);
             return vendor;
         }
-
-        public async Task DeleteVendorAsync(Vendor vendorIn) =>
-            await _vendors.DeleteOneAsync(vendor => vendor.Id == vendorIn.Id).ConfigureAwait(false);
 
         public async Task DeleteVendorAsync(string id) =>
             await _vendors.DeleteOneAsync(vendor => vendor.Id == id).ConfigureAwait(false);

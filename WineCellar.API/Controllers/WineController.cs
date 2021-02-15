@@ -1,43 +1,49 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
+using WineCellar.API.Filters;
+using WineCellar.API.Entities;
+using WineCellar.API.Models;
+using WineCellar.API.Repositories;
 
-namespace WineCellar.Net.API.Controllers
+namespace WineCellar.API.Controllers
 {
     /// <summary>
     /// The MVC based controller for Wines without view support
     /// </summary>
     [Produces("application/json", "application/xml")]
-    [Route("api/wines")]
-    [ApiController]   
+    [Route("api/[controller]")]
+    [ApiController]
     public class WineController : ControllerBase
     {
         private readonly ILogger<WineController> _logger;
         private readonly IWineRepository _service;
+        private readonly IWinePurchaseRepository _winePurchaseService;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// The main WineController constructor with parameters necessary for dependency injection
         /// </summary>
         /// <param name="logger">The ILogger type of VendorController for dependency injection</param>
-        /// <param name="service">The IVendorService for dependency injection</param>
+        /// <param name="service">The IWineRepository for dependency injection</param>
+        /// <param name="winePurchaseService">The IWinePurchaseRepository for dependency injection</param>
         /// <param name="mapper">Dependency injection for AutoMapper</param>
-        public WineController(ILogger<WineController> logger, IWineRepository service, IMapper mapper)
+        public WineController(ILogger<WineController> logger, IWineRepository service, IWinePurchaseRepository winePurchaseService, IMapper mapper)
         {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
-            
+
             _service = service ??
                 throw new ArgumentNullException(nameof(service));
+
+            _winePurchaseService = winePurchaseService ??
+                throw new ArgumentNullException(nameof(winePurchaseService));
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
@@ -45,24 +51,66 @@ namespace WineCellar.Net.API.Controllers
         }
 
         /// <summary>
-        /// Get a paged list of all wines in the database. List size and page count based on query string
+        /// Get a paged list of all wines in the database.  Can use either of the optional parameters Year, or Vineyard starts with vineyard text. List size and page count based on query string
         /// </summary>
         /// <returns>An ActionResult of type IEnumerable of WineDto</returns>
         [HttpGet(Name = "GetWinesAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<WineDto>>> GetWinesAsync()
+        public async Task<ActionResult<IEnumerable<WineDto>>> GetWinesAsync(int year = 0, int bin = 0, string vineyard = "")
         {
-            var winesFromService = await _service.GetWinesAsync().ConfigureAwait(false);
-
-            var wineDtos = _mapper.Map<IEnumerable<WineDto>>(winesFromService);
-
-            //Add a "links" collection to each Wine object returned.
-            foreach(var wineDto in wineDtos)
+            var winesFilter = new WinesFilter()
             {
-                wineDto.Links = CreateLinksForWine(wineDto);
-            }
+                Year = year,
+                Bin = bin                
+            };
+            
 
-            return Ok(wineDtos);
+            if (!string.IsNullOrEmpty(vineyard))
+            {
+               return await GetWinesByVineyardAsync(vineyard).ConfigureAwait(false);
+            }
+            else
+            {
+                var winesFromService = await _service.GetWinesAsync(winesFilter).ConfigureAwait(false);
+                return MapWinesToDto(winesFromService);
+            }    
+
+            //if (year == 0 && string.IsNullOrEmpty(vineyard))
+            //{
+            //    var winesFromService = await _service.GetWinesAsync().ConfigureAwait(false);
+            //    return MapWinesToDto(winesFromService);
+            //}
+            //else
+            //{
+            //    return await (year == 0 ? GetWinesByVineyardAsync(vineyard) : GetWinesByYearAsync(year));
+            //}
+
+            //async Task<ActionResult<IEnumerable<WineDto>>> GetWinesByYearAsync(int year)
+            //{
+            //    var winesFromService = await _service.GetWinesByYearAsync(year).ConfigureAwait(false);
+            //    return MapWinesToDto(winesFromService);
+            //}
+
+            async Task<ActionResult<IEnumerable<WineDto>>> GetWinesByVineyardAsync(string vineyard)
+            {
+                var winesFromService = await _service.GetWinesByVineyardAsync(vineyard).ConfigureAwait(false);
+                return MapWinesToDto(winesFromService);
+            }
+        }
+
+        /// <summary>
+        /// Get a paged list of all wines in database using a Price Adjust view model
+        /// </summary>
+        /// <returns>An ActionResult of type IEnumerable of WineDto</returns>
+        [HttpGet("priceadjust", Name = "GetWinesForPriceAdjustAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<WinePriceAdjustDto>>> GetWinesForPriceAdjustAsync()
+        {
+            var task = await _service.GetWinesForPriceAdjust().ConfigureAwait(false);
+            return task.ToList();
+            
+            //return MapWinesToDto(winesFromService);
+
         }
 
         /// <summary>
@@ -75,7 +123,7 @@ namespace WineCellar.Net.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<WineDto>> GetWineAsync(string id)
         {
-            _logger.LogDebug("Getting wine from serivce.");
+            _logger.LogDebug("Getting wine from service.");
 
             var wineFromService = await _service.GetWineAsync(id).ConfigureAwait(false);
             if (wineFromService == null)
@@ -84,9 +132,17 @@ namespace WineCellar.Net.API.Controllers
             }
 
             _logger.LogDebug("Mapping wine from service to WineDto.");
-            
+
             var wineDto = _mapper.Map<WineDto>(wineFromService);
 
+            _logger.LogDebug($"Checking for existing wine purchases for wine: {wineDto.Id}");
+            var winePurchasesFromService = await _winePurchaseService.GetWinePurchasesByWineIdAsync(wineFromService.Id);
+            if (winePurchasesFromService.Count() > 0)
+            {
+                var winePurchasesDto = _mapper.Map<IEnumerable<WinePurchaseDto>>(winePurchasesFromService).ToList();
+                wineDto.WinePurchases = winePurchasesDto;
+            }
+           
             // Add a "links collection" to the wineDto object returned.
             wineDto.Links = CreateLinksForWine(wineDto);
 
@@ -144,8 +200,7 @@ namespace WineCellar.Net.API.Controllers
             var wineEntityToUpdate = await _service.GetWineAsync(id).ConfigureAwait(false);
 
             if (wineEntityToUpdate == null)
-            {
-                // Do an UPSERT
+            {             
                 var wineToAdd = _mapper.Map<Wine>(wineForUpdateDto);
 
                 // This is what makes this PUT idempotent
@@ -157,7 +212,7 @@ namespace WineCellar.Net.API.Controllers
 
                 return CreatedAtRoute(nameof(GetWineAsync), new { wineDtoToReturn.Id }, wineDtoToReturn);                
             }
-
+        
             // Map the changes from our wineForUpdateDto to the entity wineToUpdate
             _mapper.Map(wineForUpdateDto, wineEntityToUpdate);
 
@@ -168,7 +223,7 @@ namespace WineCellar.Net.API.Controllers
         }
 
         /// <summary>
-        /// Delete a Wine by id
+        /// Delete a Wine by id, along with any associated wine purchases
         /// </summary>
         /// <param name="id">The id of the Wine to delete</param>
         /// <returns>An ActionResult of type NoContent</returns>
@@ -183,10 +238,39 @@ namespace WineCellar.Net.API.Controllers
                 return NotFound();
             }
 
+            // Delete any associated wine purchases
+            await _winePurchaseService.DeleteWinePurchasesByWineIdAsync(id).ConfigureAwait(false);
+
             await _service.DeleteWineAsync(id).ConfigureAwait(false);
 
             return NoContent();
         }
+
+        private ActionResult<IEnumerable<WineDto>> MapWinesToDto(IEnumerable<Wine> winesFromService)
+        {
+            var wineDtos = _mapper.Map<IEnumerable<WineDto>>(winesFromService);
+
+            //Add a "links" collection to each Wine object returned.
+            foreach (var wineDto in wineDtos)
+            {
+                wineDto.Links = CreateLinksForWine(wineDto);
+            }
+
+            return Ok(wineDtos);
+        }
+
+        //private ActionResult<IEnumerable<WinePriceAdjustDto>> MapWinesToDto(IEnumerable<Wine> winesFromService)
+        //{
+        //    var wineDtos = _mapper.Map<IEnumerable<WineDto>>(winesFromService);
+
+        //    //Add a "links" collection to each Wine object returned.
+        //    foreach (var wineDto in wineDtos)
+        //    {
+        //        wineDto.Links = CreateLinksForWine(wineDto);
+        //    }
+
+        //    return Ok(wineDtos);
+        //}
 
         private List<LinkDto> CreateLinksForWine(WineDto wineDto)
         {

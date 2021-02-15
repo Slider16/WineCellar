@@ -1,0 +1,92 @@
+﻿@page "/wineedit"
+@page "/wineedit/{WineId}"
+
+@using WineCellar.Blazor.Shared
+@using WineCellar.Blazor.UI.Services
+@using WineCellar.Blazor.UI.Components
+
+
+    @if (!Saved)
+    {
+        <h2 class="text-black-50 m-3">Details for @Wine.Name</h2>
+        
+        <div class="row p-3">
+            <div class="col-sm">
+                <div class="entity-edit">
+                    <EditForm Model="@Wine" OnValidSubmit="@HandleValidSubmitAsync">
+                        <ObjectGraphDataAnnotationsValidator />
+
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-3">Name: </label>
+                            <InputText id="name" class="form-control col-sm-8" @bind-Value="@Wine.Name" placeholder="Enter name"></InputText>
+                            <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.Name)" />
+                        </div>
+                        <div class="form-group row">
+                            <label for="vineyard" class="col-sm-3">Vineyard: </label>
+                            <InputSelect id="vineyard" class="form-control col-sm-8" @bind-Value="@Wine.VineyardId" placeholder="VineyardId">
+                                <option value="0">Select a Vineyard</option>
+                                @foreach (var vineyard in Vineyards)
+                                    {
+                                    <option value="@vineyard.Id">@vineyard.Name</option>
+                                    }
+                            </InputSelect>
+                            <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.VineyardId)" />
+                        </div>
+                        <div class="form-group row">
+                            <label for="year" class="col-sm-3">Year: </label>
+                            <InputNumber id="year" class="form-control col-sm-8" @bind-Value="@Wine.Year" placeholder="Enter the year of the wine"></InputNumber>
+                            <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.Year)" />
+                        </div>
+                        <div class="form-group row">
+                            <label for="notes" class="col-sm-3">Notes: </label>
+                            <InputTextArea id="notes" class="form-control col-sm-8" @bind-Value="@Wine.Notes" placeholder="Enter tasting notes about the wine"></InputTextArea>
+                        </div>
+                        <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Wine.Notes)" />
+                        <div class="form-group row col-sm-8">
+                            <button type="submit" class="btn btn-primary m-1">Save</button>
+                            @if (!string.IsNullOrEmpty(Wine.Id))
+                            {
+                                <button type="button" class="btn btn-danger m-1" @onclick="() => DeleteConfirmation.Show()">Delete</button>
+                                <button type="button" class="btn btn-success m-1" @onclick="@QuickAddWinePurchase">Add Wine Purchase</button>
+                            }
+                        </div>
+                        <Confirm Id="ConfirmDeleteWine" ConfirmationChanged="ConfirmDelete_Click"
+                                 @ref="DeleteConfirmation"
+                                 ConfirmationTitle="Confirm Delete"
+                                 ConfirmationMessage=@($"Are you sure you want to delete the selected item?")>
+                        </Confirm>
+                    </EditForm>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="input-group">
+                    <div class="custom-file">
+                        <InputFile class="custom-file-input" OnChange="OnInputFileChange" accept="image/png, image/jpeg, image/gif" id="inputFile" />
+                        <label class="custom-file-label" for="inputFile">Choose file</label>
+                    </div>
+                </div>
+                @if (Wine.ImageFile != null)
+                {
+                    <img src="data:@DisplayImage.ContentType;base64,@DisplayImage.Base64data" />
+                    <button type="button" class="btn btn-danger m-1" @onclick="DeleteImage_Click">Delete Image</button>
+                }
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Wine.Id))
+        {
+            <div class="row p-3">
+                <WinePurchaseComponent Wine="Wine"
+                                       @ref="WinePurchaseComponent"
+                                       WinePurchases="@Wine.WinePurchases"
+                                       OnWinePurchaseAdded="WinePurchaseAdded"
+                                       OnWinePurchaseEdited="WinePurchaseEdited"
+                                       OnWinePurchaseDeleted="WinePurchaseDeleted" />
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert @StatusClass">@Message</div>
+        <a class="btn btn-outline-primary" @onclick="@NavigateToWineList">Back to wine list</a>
+    }

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WineCellar.Blazor.UI\WineCellar.Blazor.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Watch Include="..\WineCellar.Blazor.UI\**\*.razor" />
+  </ItemGroup>
+
+</Project>

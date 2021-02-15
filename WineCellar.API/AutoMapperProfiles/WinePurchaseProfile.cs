@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WineCellar.Net.API.AutoMapperProfiles
+namespace WineCellar.API.AutoMapperProfiles
 {
     public class WinePurchaseProfile : Profile
     {
@@ -16,6 +16,8 @@ namespace WineCellar.Net.API.AutoMapperProfiles
             CreateMap<Entities.WinePurchase, Models.WinePurchaseDto>();
 
             CreateMap<Models.WinePurchaseForCreationDto, Entities.WinePurchase>();
+
+            CreateMap<Models.WinePurchaseForUpdateDto, Entities.WinePurchase>();
         }
     }
 }

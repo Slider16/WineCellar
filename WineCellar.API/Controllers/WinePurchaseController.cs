@@ -7,11 +7,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WineCellar.Net.API.Entities;
-using WineCellar.Net.API.Repositories;
-using WineCellar.Net.API.Models;
+using WineCellar.API.Entities;
+using WineCellar.API.Repositories;
+using WineCellar.API.Models;
 
-namespace WineCellar.Net.API.Controllers
+namespace WineCellar.API.Controllers
 {
     /// <summary>
     /// The MVC based controller for WinePurchases without view support
@@ -45,18 +45,18 @@ namespace WineCellar.Net.API.Controllers
         /// Get a paged list, size a page count based on query string, of all wine purchases for the specified wine
         /// </summary>
         /// <param name="wineId">The Id of the Wine for which to retrieve purchases</param>
-        /// <returns>An ActionResult of type IEnumerable of WinePurchaseDto</returns>
-        [HttpGet(Name = "GetWinePurchases")]
+        /// <returns>An ActionResult of type IEnumerable of WinePurchaseDto</returns>        
+        [HttpGet("purchases/{wineId}", Name = "GetWinePurchasesAsync")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<WinePurchaseDto>>> GetWinePurchases(string wineId)
+        public async Task<ActionResult<IEnumerable<WinePurchaseDto>>> GetWinePurchasesAsync(string wineId)
         {
             if (!await _wineService.WineExists(wineId).ConfigureAwait(false))
             {
                 return NotFound();
             }
 
-            var winePurchasesFromService = await _service.GetWinePurchasesAsync().ConfigureAwait(false);
+            var winePurchasesFromService = await _service.GetWinePurchasesByWineIdAsync(wineId).ConfigureAwait(false);
 
             var winePurchasesDto = _mapper.Map<IEnumerable<WinePurchaseDto>>(winePurchasesFromService);
 
@@ -64,22 +64,16 @@ namespace WineCellar.Net.API.Controllers
         }
 
         /// <summary>
-        /// Get a wine purchase by wineId and purchaseId
+        /// Get a wine purchase by winepurchaseId
         /// </summary>
-        /// <param name="wineId">The Id of the Wine for which to retrieve a purchase</param>
         /// <param name="winePurchaseId"></param>
         /// <returns>An ActionResult of type WinePurchaseDto</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{winePurchaseId}", Name = "GetWinePurchaseAsync")]
-        public async Task<ActionResult<WinePurchaseDto>> GetWinePurchaseAsync(string wineId, string winePurchaseId)
+        public async Task<ActionResult<WinePurchaseDto>> GetWinePurchaseAsync(string winePurchaseId)
         {
-            if (!await _wineService.WineExists(wineId).ConfigureAwait(false))
-            {
-                return NotFound();
-            }
-
-            var winePurchaseFromService = await _service.GetWinePurchaseAsync(wineId, winePurchaseId).ConfigureAwait(false);
+            var winePurchaseFromService = await _service.GetWinePurchaseAsync(winePurchaseId).ConfigureAwait(false);
 
             var winePurchaseDto = _mapper.Map<WinePurchaseDto>(winePurchaseFromService);
 
@@ -109,27 +103,20 @@ namespace WineCellar.Net.API.Controllers
         }
 
         /// <summary>
-        /// Update a wine purchase.  Creates new wine purchase if wine purchase not found
+        /// Update a wine purchase. Creates new wine purchase if wine purchase not found
         /// </summary>
-        /// <param name="wineId">The id of the Wine for which to update a purchase</param>
         /// <param name="winePurchaseId">The id of WinePurchase to update</param>
         /// <param name="winePurchaseForUpdateDto">A data transfer object representation of the WinePurchase to update</param>
         [HttpPut("{winePurchaseId}", Name = "UpdateWinePurchaseAsync")]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> UpdateWinePurchaseAsync(string wineId, string winePurchaseId, WinePurchaseForUpdateDto winePurchaseForUpdateDto)
+        public async Task<ActionResult> UpdateWinePurchaseAsync(string winePurchaseId, WinePurchaseForUpdateDto winePurchaseForUpdateDto)
         {
-            if (!await _wineService.WineExists(wineId).ConfigureAwait(false))
-            {
-                return NotFound();
-            }
-
-            var winePurchaseEntityToUpdate = await _service.GetWinePurchaseAsync(wineId, winePurchaseId).ConfigureAwait(false);
+            var winePurchaseEntityToUpdate = await _service.GetWinePurchaseAsync(winePurchaseId).ConfigureAwait(false);
 
             if (winePurchaseEntityToUpdate == null)
             {
-                // Do an UPSERT
                 var winePurchaseToAdd = _mapper.Map<WinePurchase>(winePurchaseForUpdateDto);
 
                 winePurchaseToAdd.Id = winePurchaseId;
@@ -139,7 +126,7 @@ namespace WineCellar.Net.API.Controllers
                 var winePurchaseDtoToReturn = _mapper.Map<WinePurchaseDto>(winePurchaseToAdd);
 
                 return CreatedAtRoute(nameof(GetWinePurchaseAsync),
-                    new { wineId, winePurchaseId = winePurchaseDtoToReturn.Id }, winePurchaseDtoToReturn);
+                    new { winePurchaseId = winePurchaseDtoToReturn.Id }, winePurchaseDtoToReturn);
             }
 
             // Map the changes from our winePurchaseForUpdateDto to the entity in winePurchaseEntityToUpdate
@@ -154,19 +141,13 @@ namespace WineCellar.Net.API.Controllers
         /// <summary>
         /// Delete a WinePurchase by id
         /// </summary>
-        /// <param name="wineId">The id of the Wine for which to delete a purchase</param>
         /// <param name="winePurchaseId">The id of the WinePurchase to delete</param>
         [HttpDelete("{winePurchaseId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteWinePurchaseAsync(string wineId, string winePurchaseId)
+        public async Task<ActionResult> DeleteWinePurchaseAsync(string winePurchaseId)
         {
-            if (!await _wineService.WineExists(wineId).ConfigureAwait(false))
-            {
-                return NotFound();
-            }
-
-            var winePurchaseFromService = await _service.GetWinePurchaseAsync(wineId, winePurchaseId).ConfigureAwait(false);
+            var winePurchaseFromService = await _service.GetWinePurchaseAsync(winePurchaseId).ConfigureAwait(false);
             if (winePurchaseFromService == null)
             {
                 return NoContent();

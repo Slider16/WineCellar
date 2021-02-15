@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WineCellar.API.Entities;
 
-namespace WineCellar.Net.API.Entities
+namespace WineCellar.API.Entities
 {
     public class Vendor
     {
@@ -39,5 +40,7 @@ namespace WineCellar.Net.API.Entities
 
         [BsonElement("__v")]
         public int __v { get; set; }
+
+        public Address AddressNew { get; set; }
     }
 }
