@@ -32,6 +32,12 @@ namespace WineCellar.API.Entities
         [BsonElement("sellPrice")]
         public decimal SellPrice { get; set; }
 
+        [BsonElement("imagefile")]
+        public ImageFile ImageFile { get; set; }
+
+        [BsonElement("contentimage")]
+        public byte[] ContentImage { get; set; }
+
         [BsonElement("notes")]
         public string Notes { get; set; }
 

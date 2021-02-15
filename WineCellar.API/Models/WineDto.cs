@@ -16,6 +16,9 @@ namespace WineCellar.API.Models
         public int Year { get; set; }
         public int Bin { get; set; }
         public string Notes { get; set; }
+        public ImageFile ImageFile { get; set; }
+        public byte[] ContentImage { get; set; }
+
         public List<LinkDto> Links { get; set; } 
             = new List<LinkDto>();
         public List<WinePurchaseDto> WinePurchases { get; set; }

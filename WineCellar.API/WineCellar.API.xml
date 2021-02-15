@@ -152,7 +152,7 @@
             <summary>
             Delete a Wine by id, along with any associated wine purchases
             </summary>
-            <param name="wineId">The id of the Wine to delete</param>
+            <param name="id">The id of the Wine to delete</param>
             <returns>An ActionResult of type NoContent</returns>
         </member>
         <member name="T:WineCellar.API.Controllers.WinePurchaseController">
