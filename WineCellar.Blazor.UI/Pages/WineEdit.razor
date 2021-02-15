@@ -6,15 +6,12 @@
 @using WineCellar.Blazor.UI.Components
 
 
-<TopNavBar/>
-
-
     @if (!Saved)
     {
         <h2 class="text-black-50 m-3">Details for @Wine.Name</h2>
         
         <div class="row p-3">
-            <div class="col-md-6">
+            <div class="col-sm">
                 <div class="entity-edit">
                     <EditForm Model="@Wine" OnValidSubmit="@HandleValidSubmitAsync">
                         <ObjectGraphDataAnnotationsValidator />
@@ -60,6 +57,19 @@
                         </Confirm>
                     </EditForm>
                 </div>
+            </div>
+            <div class="col-sm">
+                <div class="input-group">
+                    <div class="custom-file">
+                        <InputFile class="custom-file-input" OnChange="OnInputFileChange" accept="image/png, image/jpeg, image/gif" id="inputFile" />
+                        <label class="custom-file-label" for="inputFile">Choose file</label>
+                    </div>
+                </div>
+                @if (Wine.ImageFile != null)
+                {
+                    <img src="data:@DisplayImage.ContentType;base64,@DisplayImage.Base64data" />
+                    <button type="button" class="btn btn-danger m-1" @onclick="DeleteImage_Click">Delete Image</button>
+                }
             </div>
         </div>
 

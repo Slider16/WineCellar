@@ -1,7 +1,6 @@
 ﻿@page "/wine"
 @using WineCellar.Blazor.Shared.Models
 
-<TopNavBar />
 
 @if (!Saved)
 {
@@ -11,13 +10,13 @@
     }
     else
     {
-        <div id="wines" class="widget">
+        <div id="wines">
             <h3>
                 Wines(@Wines.Count())
                 <span class="float-right">
                     <input type="checkbox" id="showCards" @bind="ShowCards" />
                     <label for="showCards">Show Cards</label>
-                    <a href="/wineedit" class="btn btn-primary">Add Wine</a>
+                    <a href="/wineedit" class="btn btn-success">Add A New Wine</a>
                 </span>
             </h3>
 
@@ -37,22 +36,24 @@
             }
             else
             {
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Year</th>
-                            <th>Notes</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var wine in Wines)
-                        {
-                            <WineRow Wine="wine"></WineRow>
-                        }
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Year</th>
+                                <th scope="col">Notes</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var wine in Wines)
+                            {
+                                <WineRow Wine="wine"></WineRow>
+                            }
+                        </tbody>
+                    </table>             
+                </div>
             }
         </div>
     }

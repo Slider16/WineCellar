@@ -21,7 +21,9 @@ namespace WineCellar.Blazor.UI.Pages
 
         public IEnumerable<Wine> Wines { get; set; }
 
-        public bool ShowCards { get; set; }
+        public bool ShowCards { get; set; } = true;
+        
+        public bool ShowFooter { get; set; } = true;
         
         protected string Message { get; set; }
 
@@ -29,7 +31,6 @@ namespace WineCellar.Blazor.UI.Pages
         
         protected string StatusClass = string.Empty;
 
-        public bool ShowFooter { get; set; } = true;
 
         [Inject]
         public IWineDataService WineDataService { get; set; }
