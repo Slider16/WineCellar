@@ -20,6 +20,8 @@ namespace WineCellar.Blazor.UI.Components
 
         protected string StatusClass = string.Empty;
 
+        protected DisplayImage DisplayImage { get; set; }
+
         [Parameter]
         public bool ShowFooter { get; set; }
 
@@ -27,6 +29,20 @@ namespace WineCellar.Blazor.UI.Components
 
         [Inject]
         public IWineDataService WineDataService { get; set; }
+
+        protected override void OnInitialized()
+        {            
+            if (Wine != null && Wine.ImageFile?.Content?.Length > 0)
+            {
+                DisplayImage = new DisplayImage 
+                { 
+                    Base64data = Convert.ToBase64String(Wine.ImageFile.Content), 
+                    ContentType = Wine.ImageFile.ContentType, 
+                    FileName = Wine.ImageFile.FileName,
+                    FileSize = Wine.ImageFile.FileSize
+                };
+            }            
+        }
 
 
         protected void Delete_Click()

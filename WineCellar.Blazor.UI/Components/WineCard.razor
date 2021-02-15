@@ -2,15 +2,33 @@
     <div class="card-header">
         <h5>@Wine.Name</h5>
     </div>
-    <img class="card-img-top img-thumbnail" src="/images/wine-bottles.png" />
+    <a href="/wineedit/@Wine.Id">
+        @if (DisplayImage != null)
+        {
+            <img class="card-img-top img-thumbnail" src="data:@DisplayImage.ContentType;base64,@DisplayImage.Base64data" />
+        }
+        else
+        {
+            <img class="card-img-top-custom img-thumbnail" src="/images/wine-bottles.png" />
+        }
+    </a>
+
     @if (ShowFooter)
     {
-        <div class="card-footer text-center">
-            <a href="#" class="btn btn-primary m-1">View</a>
+        <div class="card-footer">
+            <div class="card-text">
+                <p>@Wine.Notes</p>
+                @if (!string.IsNullOrEmpty(@Wine?.ImageFile?.FileName)  && @Wine?.ImageFile?.FileSize > 0)
+                {
+                    <p class="text-muted">FileName: @Wine?.ImageFile?.FileName</p>
+                    <p class="text-muted">File Size: @Wine?.ImageFile?.FileSize.ToString()</p>
+                }
+            </div>
+            @*<a href="#" class="btn btn-primary m-1">View</a>
 
             <a href="/wineedit/@Wine.Id" class="btn btn-primary m-1">Edit</a>
 
-            <button type="button" class="btn btn-danger m-1" @onclick="Delete_Click">Delete</button>
+            <button type="button" class="btn btn-danger m-1" @onclick="Delete_Click">Delete</button>*@
         </div>
     }
 </div>
