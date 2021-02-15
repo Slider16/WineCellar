@@ -225,23 +225,23 @@ namespace WineCellar.API.Controllers
         /// <summary>
         /// Delete a Wine by id, along with any associated wine purchases
         /// </summary>
-        /// <param name="wineId">The id of the Wine to delete</param>
+        /// <param name="id">The id of the Wine to delete</param>
         /// <returns>An ActionResult of type NoContent</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> DeleteWineAsync(string wineId)
+        public async Task<ActionResult> DeleteWineAsync(string id)
         {
-            var wineFromService = await _service.GetWineAsync(wineId).ConfigureAwait(false);
+            var wineFromService = await _service.GetWineAsync(id).ConfigureAwait(false);
             if (wineFromService == null)
             {
                 return NotFound();
             }
 
             // Delete any associated wine purchases
-            await _winePurchaseService.DeleteWinePurchasesByWineIdAsync(wineId).ConfigureAwait(false);
+            await _winePurchaseService.DeleteWinePurchasesByWineIdAsync(id).ConfigureAwait(false);
 
-            await _service.DeleteWineAsync(wineId).ConfigureAwait(false);
+            await _service.DeleteWineAsync(id).ConfigureAwait(false);
 
             return NoContent();
         }
