@@ -58,24 +58,32 @@
                     </EditForm>
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col-sm">                
                 <div class="input-group">
                     <div class="custom-file">
                         <InputFile class="custom-file-input" OnChange="OnInputFileChange" accept="image/png, image/jpeg, image/gif" id="inputFile" />
                         <label class="custom-file-label" for="inputFile">Choose file</label>
                     </div>
                 </div>
-                @if (Wine.ImageFile != null)
-                {
-                    <img src="data:@DisplayImage.ContentType;base64,@DisplayImage.Base64data" />
-                    <button type="button" class="btn btn-danger m-1" @onclick="DeleteImage_Click">Delete Image</button>
-                }
+                <div class="img-fluid">
+                    @if (@DisplayImage != null)
+                    {
+                        <img src="data:@DisplayImage.ContentType;base64,@DisplayImage.Base64data" />
+
+                        <button type="button" class="btn btn-danger m-1" @onclick="() => DeleteImageConfirmation.Show()">Delete Image</button>
+                        <Confirm Id="ConfirmDeleteImage" ConfirmationChanged="ConfirmDeleteImage_Click"
+                                    @ref="DeleteImageConfirmation"
+                                    ConfirmationTitle="Confirm Image Delete"
+                                    ConfirmationMessage=@($"Are you sure you want to delete the image?")>
+                        </Confirm>
+                    }
+                </div>
             </div>
         </div>
 
         @if (!string.IsNullOrEmpty(Wine.Id))
         {
-            <div class="row p-3">
+            <div>
                 <WinePurchaseComponent Wine="Wine"
                                        @ref="WinePurchaseComponent"
                                        WinePurchases="@Wine.WinePurchases"

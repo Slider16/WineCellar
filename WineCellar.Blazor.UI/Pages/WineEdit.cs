@@ -22,10 +22,12 @@ namespace WineCellar.Blazor.UI.Pages
         protected string Message { get; set; }       
         
         protected bool Saved;
-        
+
         protected string StatusClass = string.Empty;
 
         protected ConfirmBase DeleteConfirmation { get; set; }
+
+        protected ConfirmBase DeleteImageConfirmation { get; set; }
 
         protected WinePurchaseComponent WinePurchaseComponent { get; set; }
         
@@ -48,26 +50,29 @@ namespace WineCellar.Blazor.UI.Pages
         public List<Vineyard> Vineyards { get; set; } = new List<Vineyard>();
 
         protected override async Task OnInitializedAsync()
-        {           
+        {                       
             Wine = new Wine();
-            
+
             Vineyards = (await VineyardDataService.GetVineyardsAsync()).ToList();
 
+
             if (!string.IsNullOrEmpty(WineId))
-            {
+            {      
                 Wine = await WineDataService.GetWineByIdAsync(WineId).ConfigureAwait(false);
-                if (Wine != null && Wine.ImageFile?.Content?.Length > 0)
+
+                if (Wine?.ImageFile?.Content == null)
+                    return;
+
+                DisplayImage = new DisplayImage
                 {
-                    DisplayImage = new DisplayImage
-                    {
-                        Base64data = Convert.ToBase64String(Wine.ImageFile.Content),
-                        ContentType = Wine.ImageFile.ContentType,
-                        FileName = Wine.ImageFile.FileName,
-                        FileSize = Wine.ImageFile.FileSize
-                    };
-                }
+                    Base64data = Convert.ToBase64String(Wine.ImageFile.Content),
+                    ContentType = Wine.ImageFile.ContentType,
+                    FileName = Wine.ImageFile.FileName,
+                    FileSize = Wine.ImageFile.FileSize
+                };
             }
         }
+
 
         protected async Task OnInputFileChange(InputFileChangeEventArgs e)
         {
@@ -144,10 +149,13 @@ namespace WineCellar.Blazor.UI.Pages
             Wine = await WineDataService.GetWineByIdAsync(WineId).ConfigureAwait(false);
         }
 
-        protected async Task DeleteImage_Click()
+        protected async Task ConfirmDeleteImage_Click(bool deleteConfirmed)
         {
-            Wine.ImageFile.Content = null;
-            await HandleValidSubmitAsync().ConfigureAwait(false);
+            if (deleteConfirmed)
+            {
+                Wine.ImageFile = null;
+                await HandleValidSubmitAsync().ConfigureAwait(false);
+            }
         }
 
         protected async Task ConfirmDelete_Click(bool deleteConfirmed)
