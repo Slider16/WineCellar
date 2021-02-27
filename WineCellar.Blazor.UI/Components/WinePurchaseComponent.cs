@@ -78,13 +78,11 @@ namespace WineCellar.Blazor.UI.Components
             {
                 await WinePurchaseDataService.UpdateWinePurchaseAsync(WinePurchase).ConfigureAwait(false);
                 
-
                 StatusClass = "alert-success";
                 Message = "Wine purchase updated successfully.";
                 ShowAlertMessage = true;
 
-                await OnWinePurchaseEdited.InvokeAsync(WinePurchase).ConfigureAwait(false);
-                
+                await OnWinePurchaseEdited.InvokeAsync(WinePurchase).ConfigureAwait(false);                
             }
             else
             {

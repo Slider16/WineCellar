@@ -23,8 +23,8 @@
 
                         <td><a href="/vendoredit/@purchase.VendorId">@vendor?.Name</a></td>
                         <td>@purchase.PurchaseDate.Value.ToString("D")</td>
-                        <td>@purchase.PurchasePrice</td>
-                        <td>@purchase.ResearchedPrice</td>
+                        <td>@purchase.PurchasePrice?.ToString("C0")</td>
+                        <td>@purchase.ResearchedPrice?.ToString("C0")</td>
                         <td><a class="btn btn-primary table-btn oi oi-pencil" @onclick="() => WinePurchaseLink_Click(purchase.Id)"></a></td>
                         <td><a @onclick="() => Delete_Click(purchase)"><i class="oi oi-delete"></i></a></td>
                     </tr>
